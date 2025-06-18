@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estudo de Redes de Computadores</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .section-title {
+            @apply text-3xl font-bold text-gray-800 mb-8 text-center;
+        }
+        .card {
+            @apply bg-white rounded-xl shadow-lg p-6 transform transition-transform duration-300;
+        }
+        .flash-card-container {
+            perspective: 1000px;
+        }
+        .flash-card {
+            width: 100%;
+            height: 200px;
+            position: relative;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .flash-card.is-flipped {
+            transform: rotateY(180deg);
+        }
+        .flash-card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .flash-card-front {
+            background-color: #4f46e5;
+            color: white;
+            font-weight: 600;
+        }
+        .flash-card-back {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            transform: rotateY(180deg);
+        }
+        .btn {
+            @apply px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition-colors;
+        }
+        .nav-link {
+            @apply px-4 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <!-- Header & Navigation -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-indigo-600">Redes de Computadores</h1>
+            <div class="hidden md:flex space-x-2">
+                <a href="#resumos" class="nav-link">Resumos</a>
+                <a href="#flashcards" class="nav-link">Flash Cards</a>
+                <a href="#atividades" class="nav-link">Atividades</a>
+                <a href="#simulado" class="nav-link">Simulado</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#resumos" class="block py-2 nav-link">Resumos</a>
+            <a href="#flashcards" class="block py-2 nav-link">Flash Cards</a>
+            <a href="#atividades" class="block py-2 nav-link">Atividades</a>
+            <a href="#simulado" class="block py-2 nav-link">Simulado</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <!-- Section: Resumos -->
+        <section id="resumos" class="py-12">
+            <h2 class="section-title">Resumos dos Tópicos</h2>
+            <div class="space-y-10">
+                <!-- Resumo 1 -->
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">1. Introdução e História das Redes</h3>
+                    <p class="text-gray-600 leading-relaxed">A comunicação, processo de troca de informações entre emissor e receptor, é a base das redes. Historicamente, as redes evoluíram dos sistemas de telégrafo e telefone, que inicialmente eram ponto a ponto. A grande virada veio com a necessidade de conectar múltiplos usuários, impulsionada por gigantes como a IBM, o Departamento de Defesa dos EUA (com a ARPANET) e a Xerox. A computação saiu do modelo centralizado de mainframes, que processavam tarefas em lote (batch), para sistemas de tempo compartilhado (time-sharing), permitindo que vários "terminais burros" acessassem um computador central. Uma rede de computadores é essencialmente um conjunto de processadores interligados por um sistema de comunicação (enlaces físicos e protocolos) para compartilhar recursos e trocar informações, diferindo de sistemas distribuídos, que focam em desempenho e confiabilidade.</p>
+                </div>
+                <!-- Resumo 2 -->
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">2. Objetivos de uma Rede de Computadores</h3>
+                    <p class="text-gray-600 leading-relaxed">As redes são projetadas com cinco objetivos principais: <strong>Compartilhamento</strong> de recursos como impressoras, scanners e, principalmente, dados e softwares. <strong>Aumento da Confiabilidade</strong>, garantindo que, se um recurso falhar, alternativas (backups) estejam disponíveis em outras máquinas. <strong>Redução de Custos</strong>, ao permitir que periféricos caros sejam compartilhados em vez de comprados para cada usuário. <strong>Escalabilidade</strong>, que é a capacidade da rede de crescer e adicionar novos dispositivos de forma simples. E, por fim, a <strong>Cooperação</strong>, facilitando o trabalho em equipe através de ferramentas colaborativas como SharePoint e sistemas de controle de versão.</p>
+                </div>
+                <!-- Resumo 3 -->
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">3. Parâmetros para Implantação de uma Rede</h3>
+                    <p class="text-gray-600 leading-relaxed">A implementação de uma rede exige a análise de vários parâmetros. Os <strong>Custos</strong> envolvem hardware, software, serviços e capacitação de pessoal. A <strong>Confiabilidade</strong> é medida por métricas como o MTBF (Tempo Médio Entre Falhas) e o MTTR (Tempo Médio Para Reparo), formalizadas em Acordos de Nível de Serviço (SLA). O <strong>Desempenho</strong> é avaliado pelo retardo (tempo para transmitir dados) e pela vazão (quantidade de dados transmitida). A <strong>Modularidade</strong> define a estrutura da rede, que pode ser unificada ou segmentada em sub-redes para melhor organização e segurança. Por fim, a <strong>Compatibilidade</strong> garante que novos componentes possam ser integrados à estrutura existente sem conflitos.</p>
+                </div>
+                <!-- Resumo 4 -->
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">4. Classificação das Redes</h3>
+                    <p class="text-gray-600 leading-relaxed">As redes podem ser classificadas de várias formas. Quanto à <strong>tecnologia de transmissão</strong>, temos ponto a ponto e multiponto. Quanto aos <strong>modos de transmissão</strong>, podem ser simplex (unidirecional), half-duplex (bidirecional, mas não simultâneo) ou full-duplex (bidirecional e simultâneo). A <strong>propagação</strong> pode ser unicast (um para um), multicast (um para um grupo) ou broadcast (um para todos). A classificação mais comum é pela <strong>topologia</strong>, que pode ser <strong>física</strong> (o layout dos cabos e equipamentos) ou <strong>lógica</strong> (o caminho que os dados percorrem). As principais topologias físicas são: <strong>Barramento</strong> (um cabo central), <strong>Anel</strong> (dispositivos em círculo), <strong>Estrela</strong> (conectados a um ponto central, como um switch), <strong>Malha</strong> (todos conectados a todos), <strong>Árvore</strong> (hierarquia de estrelas) e <strong>Híbrida</strong> (combinação de outras).</p>
+                </div>
+                 <!-- Resumo 5 -->
+                <div class="card">
+                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">5. Protocolos TCP/IP e Modelos de Referência</h3>
+                    <p class="text-gray-600 leading-relaxed">Protocolos são conjuntos de regras que permitem a comunicação entre máquinas. A suíte <strong>TCP/IP</strong> é a base da internet. O <strong>IP (Internet Protocol)</strong> cuida do endereçamento e roteamento. O endereço IPv4 é um número de 32 bits, dividido em 4 octetos (ex: 192.168.0.1), e possui uma parte que identifica a rede (Net ID) e outra que identifica o host (Host ID), definidas pela máscara de sub-rede. Os IPs são divididos em classes (A, B, C para redes de diferentes tamanhos, D para multicast, E para pesquisa). Para organizar a complexidade, foram criados modelos de referência. O <strong>Modelo OSI</strong> possui 7 camadas (Física, Enlace, Rede, Transporte, Sessão, Apresentação, Aplicação). O <strong>Modelo TCP/IP</strong> é mais prático e possui 4 camadas (Interface de Rede, Inter-rede, Transporte, Aplicação), que encapsulam as funcionalidades do modelo OSI.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section: Flash Cards -->
+        <section id="flashcards" class="py-12 bg-gray-100 -mx-6 px-6">
+            <h2 class="section-title">Flash Cards Interativos</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="flash-card-grid">
+                <!-- Flash cards will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section: Atividades -->
+        <section id="atividades" class="py-12">
+            <h2 class="section-title">Atividades Práticas</h2>
+            <div class="space-y-6" id="atividades-container">
+                <!-- Atividades will be injected here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Section: Simulado -->
+        <section id="simulado" class="py-12 bg-gray-100 -mx-6 px-6">
+            <h2 class="section-title">Simulado: Teste seu Conhecimento</h2>
+            <div id="quiz-container" class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                 <div id="quiz-intro">
+                    <p class="text-center text-gray-700 mb-6">Este simulado contém 10 questões de múltipla escolha para avaliar seu conhecimento sobre os tópicos de redes. No final, você verá sua pontuação. Boa sorte!</p>
+                    <div class="text-center">
+                        <button id="start-quiz-btn" class="btn text-lg">Começar Simulado</button>
+                    </div>
+                </div>
+                <div id="quiz-content" class="hidden">
+                    <div id="question-container" class="mb-6">
+                        <h3 id="question-text" class="text-xl font-semibold text-gray-800 mb-4"></h3>
+                        <div id="options-container" class="space-y-3"></div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <button id="next-question-btn" class="btn">Próxima Questão</button>
+                        <span id="question-counter" class="text-gray-600 font-medium"></span>
+                    </div>
+                </div>
+                <div id="quiz-result" class="hidden text-center">
+                    <h3 class="text-2xl font-bold mb-4">Resultado do Simulado</h3>
+                    <p id="score-text" class="text-4xl font-bold text-indigo-600 mb-2"></p>
+                    <p id="feedback-text" class="text-lg text-gray-700 mb-6"></p>
+                    <button id="restart-quiz-btn" class="btn">Tentar Novamente</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-6">
+        <p>&copy; 2024 - Site de Estudo de Redes de Computadores. Desenvolvido para fins educacionais.</p>
+    </footer>
+
+    <script>
+        // --- Mobile Menu ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Flash Card Data ---
+        const flashCardsData = [
+            { q: "O que é uma rede de computadores?", a: "Um conjunto de computadores e outros dispositivos interligados por um sistema de comunicação para compartilhar recursos e trocar informações." },
+            { q: "Quais são os 5 objetivos principais de uma rede?", a: "Compartilhamento, Aumento da Confiabilidade, Redução de Custos, Escalabilidade e Cooperação." },
+            { q: "O que significa MTBF e MTTR?", a: "MTBF: Tempo Médio Entre Falhas (medida de confiabilidade). MTTR: Tempo Médio Para Reparo (tempo para consertar uma falha)." },
+            { q: "Qual a diferença entre topologia física e lógica?", a: "Física é o layout dos cabos e equipamentos. Lógica é o caminho que os dados seguem na rede." },
+            { q: "Descreva a topologia em Estrela.", a: "Todos os dispositivos são conectados a um ponto central, como um hub ou switch. Se um cabo falha, apenas um dispositivo é afetado." },
+            { q: "Qual a função do protocolo IP?", a: "É responsável pelo endereçamento lógico dos dispositivos (endereço IP) e pelo roteamento dos pacotes de dados através da rede." },
+            { q: "Quantas camadas tem o modelo OSI e o TCP/IP?", a: "O Modelo OSI tem 7 camadas. O Modelo TCP/IP tem 4 camadas." },
+            { q: "O que é um endereço IP privado?", a: "É um endereço reservado para uso em redes locais (LANs) e não é roteável na internet. Ex: 192.168.x.x, 10.x.x.x." },
+            { q: "O que é Broadcast?", a: "É um modo de propagação de dados onde uma mensagem é enviada de uma fonte para TODOS os outros dispositivos na mesma rede." },
+        ];
+
+        // --- Atividades Data ---
+        const atividadesData = [
+            { 
+                q: "1. Imagine seis computadores conectados numa topologia em malha regular. Quantos cabos são necessários e quantas interfaces de rede (portas) cada computador precisa?",
+                a: "São necessários 15 cabos. A fórmula é n(n-1)/2, onde n=6. Cada computador precisa de 5 interfaces de rede, uma para se conectar a cada um dos outros cinco computadores."
+            },
+            {
+                q: "2. Em uma rede com topologia em barramento usando cabo coaxial, o que acontece se o cabo for rompido em algum ponto?",
+                a: "A rede inteira para de funcionar. O rompimento do cabo causa problemas de terminação do sinal, interrompendo toda a comunicação no barramento."
+            },
+            {
+                q: "3. Qual a principal diferença de funcionamento entre um Hub e um Switch em uma topologia estrela?",
+                a: "Um Hub opera na camada 1 (Física) e simplesmente repete qualquer sinal que recebe para todas as suas portas (criando um barramento lógico e um grande domínio de colisão). Um Switch opera na camada 2 (Enlace), aprende o endereço MAC dos dispositivos em cada porta e encaminha os pacotes apenas para a porta de destino (criando uma estrela lógica e domínios de colisão por porta)."
+            }
+        ];
+
+        // --- Quiz Data ---
+        const quizData = [
+            {
+                question: "Qual das seguintes topologias físicas conecta todos os dispositivos a um único ponto central?",
+                options: ["Anel", "Barramento", "Estrela", "Malha"],
+                answer: "Estrela"
+            },
+            {
+                question: "Qual dispositivo é usado para segmentar domínios de broadcast?",
+                options: ["Hub", "Switch", "Repetidor", "Roteador"],
+                answer: "Roteador"
+            },
+            {
+                question: "O endereço IP 192.168.10.255 é tipicamente um endereço de:",
+                options: ["Rede", "Broadcast", "Host Válido", "Gateway"],
+                answer: "Broadcast"
+            },
+            {
+                question: "Em qual camada do Modelo OSI o roteamento de pacotes ocorre?",
+                options: ["Camada 2 (Enlace)", "Camada 3 (Rede)", "Camada 4 (Transporte)", "Camada 7 (Aplicação)"],
+                answer: "Camada 3 (Rede)"
+            },
+            {
+                question: "Qual protocolo da camada de Transporte do modelo TCP/IP é orientado a conexão e confiável?",
+                options: ["IP", "UDP", "TCP", "HTTP"],
+                answer: "TCP"
+            },
+            {
+                question: "Qual topologia física oferece a maior redundância?",
+                options: ["Barramento", "Estrela", "Anel", "Malha"],
+                answer: "Malha"
+            },
+            {
+                question: "Um endereço IP da Classe A permite quantos hosts por rede?",
+                options: ["254", "65.534", "16.777.214", "Ilimitados"],
+                answer: "16.777.214"
+            },
+            {
+                question: "Qual modo de transmissão permite comunicação em ambas as direções, mas não simultaneamente?",
+                options: ["Simplex", "Full-Duplex", "Half-Duplex", "Multiplex"],
+                answer: "Half-Duplex"
+            },
+            {
+                question: "O processo de adicionar cabeçalhos em cada camada é chamado de:",
+                options: ["Encapsulamento", "Segmentação", "Multiplexação", "Fragmentação"],
+                answer: "Encapsulamento"
+            },
+            {
+                question: "O endereço 127.0.0.1 é reservado para:",
+                options: ["Broadcast", "Rede Privada", "Loopback", "Multicast"],
+                answer: "Loopback"
+            }
+        ];
+
+        // --- Function to create and inject Flash Cards ---
+        function populateFlashCards() {
+            const grid = document.getElementById('flash-card-grid');
+            flashCardsData.forEach(item => {
+                const cardContainer = document.createElement('div');
+                cardContainer.className = 'flash-card-container';
+                
+                const card = document.createElement('div');
+                card.className = 'flash-card';
+                
+                const front = document.createElement('div');
+                front.className = 'flash-card-face flash-card-front';
+                front.textContent = item.q;
+                
+                const back = document.createElement('div');
+                back.className = 'flash-card-face flash-card-back';
+                back.textContent = item.a;
+                
+                card.appendChild(front);
+                card.appendChild(back);
+                cardContainer.appendChild(card);
+                
+                card.addEventListener('click', () => {
+                    card.classList.toggle('is-flipped');
+                });
+                
+                grid.appendChild(cardContainer);
+            });
+        }
+
+        // --- Function to create and inject Atividades ---
+        function populateAtividades() {
+            const container = document.getElementById('atividades-container');
+            atividadesData.forEach((item, index) => {
+                const atividadeDiv = document.createElement('div');
+                atividadeDiv.className = 'card';
+
+                const question = document.createElement('p');
+                question.className = 'text-lg font-semibold text-gray-700 mb-4';
+                question.textContent = item.q;
+
+                const answerDiv = document.createElement('div');
+                answerDiv.id = `answer-${index}`;
+                answerDiv.className = 'hidden mt-4 p-4 bg-green-100 text-green-800 rounded-lg';
+                answerDiv.textContent = item.a;
+
+                const button = document.createElement('button');
+                button.className = 'btn btn-sm bg-gray-600 hover:bg-gray-700';
+                button.textContent = 'Mostrar Resposta';
+                button.onclick = () => {
+                    const ans = document.getElementById(`answer-${index}`);
+                    ans.classList.toggle('hidden');
+                    button.textContent = ans.classList.contains('hidden') ? 'Mostrar Resposta' : 'Ocultar Resposta';
+                };
+
+                atividadeDiv.appendChild(question);
+                atividadeDiv.appendChild(button);
+                atividadeDiv.appendChild(answerDiv);
+                container.appendChild(atividadeDiv);
+            });
+        }
+
+        // --- Quiz Logic ---
+        const quizIntro = document.getElementById('quiz-intro');
+        const quizContent = document.getElementById('quiz-content');
+        const quizResult = document.getElementById('quiz-result');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const restartQuizBtn = document.getElementById('restart-quiz-btn');
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionCounter = document.getElementById('question-counter');
+        const scoreText = document.getElementById('score-text');
+        const feedbackText = document.getElementById('feedback-text');
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            quizIntro.classList.add('hidden');
+            quizResult.classList.add('hidden');
+            quizContent.classList.remove('hidden');
+            currentQuestionIndex = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = quizData[currentQuestionIndex];
+            questionText.textContent = question.question;
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.className = 'block w-full text-left p-4 rounded-lg bg-gray-100 hover:bg-indigo-100 transition-colors focus:outline-none';
+                button.onclick = () => selectAnswer(button, option, question.answer);
+                optionsContainer.appendChild(button);
+            });
+            
+            questionCounter.textContent = `Questão ${currentQuestionIndex + 1} de ${quizData.length}`;
+            nextQuestionBtn.classList.add('hidden');
+        }
+
+        function selectAnswer(button, selectedOption, correctAnswer) {
+            Array.from(optionsContainer.children).forEach(btn => {
+                btn.disabled = true;
+                if (btn.textContent === correctAnswer) {
+                    btn.classList.add('bg-green-500', 'text-white');
+                }
+            });
+
+            if (selectedOption === correctAnswer) {
+                score++;
+            } else {
+                button.classList.add('bg-red-500', 'text-white');
+            }
+            
+            nextQuestionBtn.classList.remove('hidden');
+            if (currentQuestionIndex === quizData.length - 1) {
+                nextQuestionBtn.textContent = 'Ver Resultado';
+            } else {
+                nextQuestionBtn.textContent = 'Próxima Questão';
+            }
+        }
+
+        function showNextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizData.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            quizContent.classList.add('hidden');
+            quizResult.classList.remove('hidden');
+            
+            const percentage = Math.round((score / quizData.length) * 100);
+            scoreText.textContent = `${percentage}%`;
+            
+            if (percentage >= 80) {
+                feedbackText.textContent = 'Excelente! Você tem um ótimo conhecimento sobre redes.';
+                scoreText.classList.remove('text-red-500', 'text-yellow-500');
+                scoreText.classList.add('text-green-600');
+            } else if (percentage >= 50) {
+                feedbackText.textContent = 'Bom trabalho! Continue estudando para aprimorar alguns conceitos.';
+                 scoreText.classList.remove('text-red-500', 'text-green-600');
+                scoreText.classList.add('text-yellow-500');
+            } else {
+                feedbackText.textContent = 'Não desanime! Revise os resumos e flash cards e tente novamente.';
+                scoreText.classList.remove('text-green-600', 'text-yellow-500');
+                scoreText.classList.add('text-red-500');
+            }
+        }
+
+        startQuizBtn.addEventListener('click', startQuiz);
+        nextQuestionBtn.addEventListener('click', showNextQuestion);
+        restartQuizBtn.addEventListener('click', startQuiz);
+
+        // --- Initial Population ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateFlashCards();
+            populateAtividades();
+        });
+    </script>
+</body>
+</html>
