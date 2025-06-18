@@ -72,6 +72,12 @@
         #quiz-modal.active .quiz-modal-content {
             @apply scale-100;
         }
+        .img-container {
+            @apply w-full h-auto max-h-96 flex justify-center items-center bg-gray-100 rounded-lg overflow-hidden;
+        }
+        .img-container img {
+            @apply w-full h-full object-contain;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -108,7 +114,9 @@
                 <div class="card">
                     <h3 class="text-2xl font-semibold mb-4 text-indigo-700">1. Introdução e História das Redes</h3>
                     <p class="text-gray-700 leading-relaxed mb-4">A necessidade de comunicação a distância impulsionou a tecnologia, começando com o telégrafo de Samuel Morse em 1838, que usava um código binário (pontos e traços) para transmitir mensagens. Esta foi a primeira grande rede de comunicação a cobrir continentes. A evolução continuou com o telefone, que inicialmente também era ponto a ponto. A grande mudança veio com a computação. Na era dos <strong>mainframes</strong>, computadores gigantescos e caros, o processamento era feito em lote (batch), onde tarefas eram entregues em cartões perfurados e processadas em fila. Para otimizar o uso, surgiu o <strong>time-sharing</strong> (tempo compartilhado), permitindo que múltiplos usuários acessassem o mainframe simultaneamente através de "terminais burros" — dispositivos apenas com tela e teclado, sem capacidade de processamento próprio.</p>
-                    <img src="https://placehold.co/800x400/e2e8f0/4a5568?text=Imagem+de+um+Mainframe+Antigo" alt="Imagem de um Mainframe Antigo" class="w-full rounded-lg shadow-md my-4">
+                    <div class="img-container my-4">
+                        <img src="https://www.oarquivo.com.br/images/imagens-usuarios/2016/06/11494/10-computadores-influentes-4.jpg" alt="Imagem de um Mainframe Antigo IBM System/360" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/e2e8f0/4a5568?text=Imagem+de+Mainframe+Antigo';">
+                    </div>
                     <p class="text-gray-700 leading-relaxed">O marco decisivo para as redes modernas foi a <strong>ARPANET</strong>, criada no final dos anos 60 pelo Departamento de Defesa dos EUA (DoD). Seu objetivo era criar uma rede descentralizada e robusta, capaz de sobreviver a falhas em partes da rede (como em um ataque nuclear). Foi na ARPANET que surgiram os protocolos que formam a base da internet hoje, o TCP/IP. Assim, uma rede de computadores é um sistema que interliga equipamentos para compartilhar recursos (hardware, software, dados) e permitir a troca de informações, enquanto um sistema distribuído usa múltiplos processadores para trabalhar em conjunto como se fosse um único sistema, focando em alto desempenho e confiabilidade.</p>
                 </div>
 
@@ -123,7 +131,9 @@
                         <li><strong>Escalabilidade:</strong> Refere-se à capacidade de uma rede crescer de forma controlada. Uma rede bem projetada permite adicionar novos computadores, servidores ou até mesmo novas filiais sem a necessidade de redesenhar toda a estrutura.</li>
                         <li><strong>Cooperação:</strong> A rede é a espinha dorsal do trabalho em equipe moderno. Ela viabiliza a comunicação instantânea (e-mail, chat), a colaboração em documentos em tempo real (Google Docs, Microsoft 365) e o gerenciamento de projetos com ferramentas centralizadas.</li>
                     </ul>
-                     <img src="https://placehold.co/800x400/dbeafe/1e3a8a?text=Compartilhamento+de+Recursos+em+Rede" alt="Ilustração de compartilhamento de recursos em rede" class="w-full rounded-lg shadow-md mt-4">
+                     <div class="img-container mt-4">
+                        <img src="https://media.gcflearnfree.org/content/55e0914924929be0279509cf_05_29_2014/network_sharing.jpg" alt="Ilustração de compartilhamento de recursos em rede" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/dbeafe/1e3a8a?text=Compartilhamento+de+Recursos';">
+                    </div>
                 </div>
 
                 <!-- Resumo 3 -->
@@ -136,7 +146,9 @@
                         <li><strong>Desempenho:</strong> Medido principalmente por <strong>vazão (throughput)</strong> - a quantidade de dados que efetivamente passa pela rede (em Mbps ou Gbps) - e <strong>latência (delay)</strong> - o tempo que um pacote leva para ir do ponto A ao B. Uma boa rede tem alta vazão e baixa latência.</li>
                         <li><strong>Modularidade e Escalabilidade:</strong> Uma rede modular é dividida em blocos lógicos (segmentação, como VLANs). Isso melhora a segurança (um problema em um segmento não afeta os outros) e o desempenho (reduz o tráfego de broadcast). A modularidade facilita a escalabilidade, permitindo que a rede cresça adicionando novos módulos.</li>
                     </ul>
-                    <img src="https://placehold.co/800x400/e0e7ff/3730a3?text=Segmentação+de+Rede+(VLANs)" alt="Diagrama de uma rede segmentada" class="w-full rounded-lg shadow-md mt-4">
+                    <div class="img-container mt-4">
+                        <img src="https://materialpublic.imd.ufrn.br/curso/disciplina/4/19/14/2/imagens/1_Tipos_de_Rede_1.png" alt="Diagrama de LANs, MANs e WANs" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/e0e7ff/3730a3?text=Tipos+de+Rede';">
+                    </div>
                 </div>
                 
                 <!-- Resumo 4 -->
@@ -146,22 +158,30 @@
                     <div class="grid md:grid-cols-2 gap-8">
                         <div>
                             <h4 class="font-semibold text-lg mb-2">Topologia em Estrela</h4>
-                            <img src="https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Estrela" alt="Diagrama da Topologia em Estrela" class="w-full rounded-lg shadow-md mb-2">
+                             <div class="img-container mb-2">
+                                <img src="https://blog.xpeducacao.com.br/wp-content/uploads/2023/07/2-4.png" alt="Diagrama da Topologia em Estrela" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Estrela';">
+                            </div>
                             <p class="text-gray-600">Todos os dispositivos se conectam a um ponto central (hub ou switch). É a mais comum hoje. <strong>Vantagem:</strong> Uma falha em um cabo afeta apenas um dispositivo. <strong>Desvantagem:</strong> Se o ponto central falhar, toda a rede para.</p>
                         </div>
                         <div>
                             <h4 class="font-semibold text-lg mb-2">Topologia em Barramento (Bus)</h4>
-                             <img src="https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Barramento" alt="Diagrama da Topologia em Barramento" class="w-full rounded-lg shadow-md mb-2">
+                             <div class="img-container mb-2">
+                                <img src="https://a3aengenharia.com.br/wp-content/uploads/2023/11/topologia-de-rede-em-barramento-1024x576.webp" alt="Diagrama da Topologia em Barramento" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Barramento';">
+                            </div>
                             <p class="text-gray-600">Dispositivos conectados a um único cabo central (backbone). <strong>Vantagem:</strong> Baixo custo e simplicidade. <strong>Desvantagem:</strong> Um rompimento no cabo paralisa toda a rede e é difícil de diagnosticar.</p>
                         </div>
                          <div>
                             <h4 class="font-semibold text-lg mb-2">Topologia em Anel (Ring)</h4>
-                             <img src="https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Anel" alt="Diagrama da Topologia em Anel" class="w-full rounded-lg shadow-md mb-2">
+                             <div class="img-container mb-2">
+                                <img src="https://a3aengenharia.com.br/wp-content/uploads/2023/11/topologia-em-anel-1024x576.webp" alt="Diagrama da Topologia em Anel" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Anel';">
+                            </div>
                             <p class="text-gray-600">Os dados circulam em uma única direção, passando por cada nó. <strong>Vantagem:</strong> Evita colisões de dados. <strong>Desvantagem:</strong> A falha de um único nó pode derrubar a rede.</p>
                         </div>
                          <div>
                             <h4 class="font-semibold text-lg mb-2">Topologia em Malha (Mesh)</h4>
-                            <img src="https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Malha" alt="Diagrama da Topologia em Malha" class="w-full rounded-lg shadow-md mb-2">
+                             <div class="img-container mb-2">
+                                <img src="https://images.edrawsoft.com/pt/articles/mesh-topology/full-mesh-topology.png" alt="Diagrama da Topologia em Malha" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Malha';">
+                            </div>
                             <p class="text-gray-600">Cada dispositivo é conectado a todos os outros. <strong>Vantagem:</strong> Altíssima redundância e tolerância a falhas. <strong>Desvantagem:</strong> Custo extremamente elevado e complexidade.</p>
                         </div>
                     </div>
