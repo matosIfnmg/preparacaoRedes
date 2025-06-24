@@ -1,500 +1,346 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estudo Aprofundado de Redes de Computadores</title>
+    <title>Guia de Estudo: Redes de Computadores</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            scroll-behavior: smooth;
         }
         .section-title {
-            @apply text-3xl md:text-4xl font-bold text-gray-800 mb-10 text-center;
+            border-bottom: 2px solid #3b82f6; /* blue-500 */
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
         }
         .card {
-            @apply bg-white rounded-xl shadow-lg p-6 md:p-8;
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s;
         }
-        .flash-card-container {
-            perspective: 1000px;
+        .card:hover {
+            transform: translateY(-5px);
         }
-        .flash-card {
-            width: 100%;
-            height: 200px;
-            position: relative;
-            transition: transform 0.6s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .flash-card.is-flipped {
-            transform: rotateY(180deg);
-        }
-        .flash-card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .flash-card-front {
-            background-color: #4f46e5;
+        .active-nav {
+            background-color: #3b82f6; /* blue-500 */
             color: white;
-            font-weight: 600;
         }
-        .flash-card-back {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            transform: rotateY(180deg);
+        
+        /* Estilos para Flashcard */
+        .flashcard-container { perspective: 1000px; }
+        .flashcard {
+            width: 100%; height: 200px; position: relative;
+            transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer;
         }
-        .btn {
-            @apply px-6 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-opacity-75 transition-colors duration-200;
+        .flashcard.flipped { transform: rotateY(180deg); }
+        .flashcard-face {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; display: flex; justify-content: center;
+            align-items: center; padding: 20px; border-radius: 0.75rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;
         }
-        .nav-link {
-            @apply px-4 py-2 text-gray-700 hover:text-indigo-600 font-medium transition-colors;
+        .flashcard-front { background-color: #e0e7ff; color: #374151; font-weight: 500; }
+        .flashcard-back { background-color: #dbeafe; color: #1e3a8a; transform: rotateY(180deg); }
+
+        /* Estilos para o Quiz */
+        .quiz-option {
+            display: block; width: 100%; text-align: left;
+            padding: 0.75rem 1rem; margin-top: 0.5rem;
+            border: 1px solid #d1d5db; border-radius: 0.5rem;
+            background-color: #f9fafb; transition: all 0.2s;
         }
-        /* Estilos para o Modal do Quiz */
-        #quiz-modal {
-            @apply fixed inset-0 bg-gray-900 bg-opacity-80 flex justify-center items-center z-50 transition-opacity duration-300;
+        .quiz-option:not(:disabled):hover {
+            border-color: #3b82f6; background-color: #eff6ff;
         }
-        .quiz-modal-content {
-            @apply bg-white p-8 rounded-2xl shadow-2xl w-11/12 max-w-2xl transform scale-95 transition-transform duration-300;
-        }
-        #quiz-modal.active .quiz-modal-content {
-            @apply scale-100;
-        }
-        .img-container {
-            @apply w-full h-auto max-h-96 flex justify-center items-center bg-gray-100 rounded-lg overflow-hidden;
-        }
-        .img-container img {
-            @apply w-full h-full object-contain;
-        }
+        .quiz-option:disabled { cursor: not-allowed; }
+        .correct { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d; }
+        .incorrect { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c; }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-100 text-gray-800">
 
-    <!-- Header & Navigation -->
-    <header class="bg-white shadow-md sticky top-0 z-40">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold text-indigo-600">Redes de Computadores</h1>
-            <div class="hidden md:flex space-x-2">
-                <a href="#resumos" class="nav-link">Resumos</a>
-                <a href="#flashcards" class="nav-link">Flash Cards</a>
-                <a href="#atividades" class="nav-link">Atividades</a>
-                <a href="#simulado" class="nav-link">Simulado</a>
-            </div>
-            <button id="mobile-menu-button" class="md:hidden text-gray-700 focus:outline-none">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
-        </nav>
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#resumos" class="block py-2 nav-link">Resumos</a>
-            <a href="#flashcards" class="block py-2 nav-link">Flash Cards</a>
-            <a href="#atividades" class="block py-2 nav-link">Atividades</a>
-            <a href="#simulado" class="block py-2 nav-link">Simulado</a>
+    <header class="bg-white shadow-md p-4 sticky top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-blue-600">Guia de Estudo: Redes de Computadores</h1>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
+    <div class="flex">
+        <aside class="w-1/4 min-h-screen bg-gray-800 text-white p-4 sticky top-[72px] h-screen overflow-y-auto">
+            <nav id="sidebar-nav">
+                <h2 class="text-lg font-semibold mb-4">Tópicos de Estudo</h2>
+                <ul class="space-y-2">
+                    <li><a href="#processo-comunicacao" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Processo de Comunicação</a></li>
+                    <li><a href="#corrente-bem" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">A Corrente do Bem</a></li>
+                    <li><a href="#conceitos-formais" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Conceitos Formais</a></li>
+                    <li><a href="#topologias" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Topologias de Rede</a></li>
+                    <li><a href="#videos-apoio" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Vídeos de Apoio</a></li>
+                    <li><a href="#flashcards" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Flashcards Interativos</a></li>
+                    <li><a href="#questoes-pratica" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Quiz Interativo</a></li>
+                </ul>
+            </nav>
+        </aside>
 
-        <!-- Section: Resumos Aprofundados -->
-        <section id="resumos" class="py-12">
-            <h2 class="section-title">Resumos Aprofundados</h2>
-            <div class="space-y-12">
-                <!-- Resumo 1 -->
+        <main class="w-3/4 p-8">
+            <!-- Seções de Resumo -->
+            <section id="processo-comunicacao" class="mb-12"><h2 class="text-3xl font-bold section-title">Processo de Comunicação</h2><div class="card"><p>A comunicação de dados é a troca de informações entre dispositivos através de um meio de transmissão. Requer cinco componentes: Emissor, Receptor, Mensagem, Meio de Transmissão e Protocolo.</p></div></section>
+            <section id="corrente-bem" class="mb-12"><h2 class="text-3xl font-bold section-title">A Corrente do Bem</h2><div class="card"><p>O desenvolvimento das redes foi impulsionado por 3 frentes: <strong>IBM</strong> (Mainframes, time-sharing), <strong>DoD dos EUA</strong> (ARPANET, TCP/IP) e <strong>Xerox PARC</strong> (Ethernet).</p></div></section>
+            <section id="conceitos-formais" class="mb-12"><h2 class="text-3xl font-bold section-title">Conceitos Formais</h2><div class="grid md:grid-cols-2 gap-8"><div class="card"><h3 class="text-xl font-semibold mb-2">Redes de Computadores</h3><p>Conjunto de computadores autônomos interconectados para <strong>compartilhamento de recursos</strong>.</p></div><div class="card"><h3 class="text-xl font-semibold mb-2">Sistemas Distribuídos</h3><p>Coleção de computadores independentes que se apresenta ao usuário como um <strong>único sistema coerente</strong>, visando desempenho e confiabilidade.</p></div></div></section>
+            <section id="topologias" class="mb-12"><h2 class="text-3xl font-bold section-title">Topologias de Rede</h2><div class="card"><p>A <strong>Topologia Física</strong> é o layout dos cabos, enquanto a <strong>Topologia Lógica</strong> é como os dados fluem. Principais físicas: Anel (convencional, Token Ring, FDDI com anel duplo), Barramento, Estrela, Malha e Árvore.</p></div></section>
+            
+            <!-- Vídeos -->
+            <section id="videos-apoio" class="mb-12">
+                <h2 class="text-3xl font-bold section-title">Vídeos de Apoio</h2>
+                <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="card"><h3 class="text-xl font-semibold mb-2">Fundamentos e Protocolos</h3><iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/0gYOztu8UnQ" title="Vídeo sobre Protocolos de Comunicação" frameborder="0" allowfullscreen></iframe></div>
+                    <div class="card"><h3 class="text-xl font-semibold mb-2">Topologias de Rede</h3><iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/YcjX-rzg9Sc" title="Vídeo sobre Topologias de Rede" frameborder="0" allowfullscreen></iframe></div>
+                </div>
+            </section>
+            
+            <!-- Flashcards -->
+            <section id="flashcards" class="mb-12">
+                <h2 class="text-3xl font-bold section-title">Flashcards Interativos</h2>
+                <p class="mb-4">Clique nos cards para virar e ver a resposta.</p>
+                <div id="flashcard-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </section>
+            
+            <!-- Quiz Interativo -->
+            <section id="questoes-pratica" class="mb-12">
+                <h2 class="text-3xl font-bold section-title">Quiz Interativo</h2>
                 <div class="card">
-                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">1. Introdução e História das Redes</h3>
-                    <p class="text-gray-700 leading-relaxed mb-4">A necessidade de comunicação a distância impulsionou a tecnologia, começando com o telégrafo de Samuel Morse em 1838, que usava um código binário (pontos e traços) para transmitir mensagens. Esta foi a primeira grande rede de comunicação a cobrir continentes. A evolução continuou com o telefone, que inicialmente também era ponto a ponto. A grande mudança veio com a computação. Na era dos <strong>mainframes</strong>, computadores gigantescos e caros, o processamento era feito em lote (batch), onde tarefas eram entregues em cartões perfurados e processadas em fila. Para otimizar o uso, surgiu o <strong>time-sharing</strong> (tempo compartilhado), permitindo que múltiplos usuários acessassem o mainframe simultaneamente através de "terminais burros" — dispositivos apenas com tela e teclado, sem capacidade de processamento próprio.</p>
-                    <div class="img-container my-4">
-                        <img src="https://www.oarquivo.com.br/images/imagens-usuarios/2016/06/11494/10-computadores-influentes-4.jpg" alt="Imagem de um Mainframe Antigo IBM System/360" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/e2e8f0/4a5568?text=Imagem+de+Mainframe+Antigo';">
+                    <div class="flex justify-between items-center mb-4">
+                        <p>Teste seus conhecimentos. As questões são embaralhadas a cada recarga.</p>
+                        <div class="text-lg font-bold">Pontuação: <span id="score">0</span> / <span id="total-questions">0</span></div>
                     </div>
-                    <p class="text-gray-700 leading-relaxed">O marco decisivo para as redes modernas foi a <strong>ARPANET</strong>, criada no final dos anos 60 pelo Departamento de Defesa dos EUA (DoD). Seu objetivo era criar uma rede descentralizada e robusta, capaz de sobreviver a falhas em partes da rede (como em um ataque nuclear). Foi na ARPANET que surgiram os protocolos que formam a base da internet hoje, o TCP/IP. Assim, uma rede de computadores é um sistema que interliga equipamentos para compartilhar recursos (hardware, software, dados) e permitir a troca de informações, enquanto um sistema distribuído usa múltiplos processadores para trabalhar em conjunto como se fosse um único sistema, focando em alto desempenho e confiabilidade.</p>
-                </div>
-
-                <!-- Resumo 2 -->
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">2. Objetivos de uma Rede de Computadores</h3>
-                    <p class="text-gray-700 leading-relaxed">As redes são construídas sobre pilares que justificam seu investimento e complexidade:</p>
-                    <ul class="list-disc list-inside space-y-3 text-gray-700 my-4">
-                        <li><strong>Compartilhamento de Recursos:</strong> É o objetivo mais evidente. Permite que múltiplos usuários acessem uma única impressora, um servidor de arquivos central, ou softwares caros instalados em um único servidor. Isso não só economiza dinheiro, mas centraliza a gestão e a manutenção.</li>
-                        <li><strong>Aumento da Confiabilidade:</strong> A confiabilidade é alcançada através da redundância. Em uma rede, é possível ter servidores de backup que assumem as funções de um servidor principal caso ele falhe (failover). Da mesma forma, dados importantes podem ser replicados em diferentes locais físicos para prevenir perdas.</li>
-                        <li><strong>Redução de Custos:</strong> Diretamente ligado ao compartilhamento. Em vez de comprar uma impressora a laser para cada um dos 50 funcionários de um escritório, a empresa pode comprar algumas poucas impressoras de alta capacidade e conectá-las em rede. O mesmo se aplica a links de internet, softwares e armazenamento.</li>
-                        <li><strong>Escalabilidade:</strong> Refere-se à capacidade de uma rede crescer de forma controlada. Uma rede bem projetada permite adicionar novos computadores, servidores ou até mesmo novas filiais sem a necessidade de redesenhar toda a estrutura.</li>
-                        <li><strong>Cooperação:</strong> A rede é a espinha dorsal do trabalho em equipe moderno. Ela viabiliza a comunicação instantânea (e-mail, chat), a colaboração em documentos em tempo real (Google Docs, Microsoft 365) e o gerenciamento de projetos com ferramentas centralizadas.</li>
-                    </ul>
-                     <div class="img-container mt-4">
-                        <img src="https://media.gcflearnfree.org/content/55e0914924929be0279509cf_05_29_2014/network_sharing.jpg" alt="Ilustração de compartilhamento de recursos em rede" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/dbeafe/1e3a8a?text=Compartilhamento+de+Recursos';">
+                    <div id="quiz-container" class="space-y-8">
+                        <!-- Questões do Quiz serão inseridas aqui via JS -->
                     </div>
+                    <button id="restart-quiz" class="mt-8 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Reiniciar Quiz</button>
                 </div>
-
-                <!-- Resumo 3 -->
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">3. Parâmetros para Implantação de uma Rede</h3>
-                    <p class="text-gray-700 leading-relaxed">Projetar uma rede envolve um balanço cuidadoso entre diversos fatores críticos:</p>
-                    <ul class="list-disc list-inside space-y-3 text-gray-700 my-4">
-                        <li><strong>Custos:</strong> Inclui o custo inicial de hardware (cabos, switches, roteadores) e software, mas também os custos contínuos de manutenção, energia, licenciamento e pessoal especializado para gerenciar a rede.</li>
-                        <li><strong>Confiabilidade:</strong> A confiabilidade é quantificada. O <strong>SLA (Service Level Agreement)</strong> é um contrato que define as metas de disponibilidade da rede (ex: 99,9% de uptime). Para medir isso, usam-se o <strong>MTBF (Tempo Médio Entre Falhas)</strong>, que indica quanto tempo, em média, um componente funciona antes de falhar, e o <strong>MTTR (Tempo Médio para Reparo)</strong>, que mede a rapidez com que a falha é corrigida. O ideal é ter um MTBF alto e um MTTR baixo.</li>
-                        <li><strong>Desempenho:</strong> Medido principalmente por <strong>vazão (throughput)</strong> - a quantidade de dados que efetivamente passa pela rede (em Mbps ou Gbps) - e <strong>latência (delay)</strong> - o tempo que um pacote leva para ir do ponto A ao B. Uma boa rede tem alta vazão e baixa latência.</li>
-                        <li><strong>Modularidade e Escalabilidade:</strong> Uma rede modular é dividida em blocos lógicos (segmentação, como VLANs). Isso melhora a segurança (um problema em um segmento não afeta os outros) e o desempenho (reduz o tráfego de broadcast). A modularidade facilita a escalabilidade, permitindo que a rede cresça adicionando novos módulos.</li>
-                    </ul>
-                    <div class="img-container mt-4">
-                        <img src="https://materialpublic.imd.ufrn.br/curso/disciplina/4/19/14/2/imagens/1_Tipos_de_Rede_1.png" alt="Diagrama de LANs, MANs e WANs" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/800x400/e0e7ff/3730a3?text=Tipos+de+Rede';">
-                    </div>
-                </div>
-                
-                <!-- Resumo 4 -->
-                <div class="card">
-                    <h3 class="text-2xl font-semibold mb-4 text-indigo-700">4. Classificação das Redes e Topologias</h3>
-                    <p class="text-gray-700 leading-relaxed mb-4">A forma como os dispositivos são conectados (topologia) é uma das classificações mais importantes. A <strong>topologia física</strong> descreve o layout real dos cabos, enquanto a <strong>topologia lógica</strong> descreve o caminho que os dados percorrem.</p>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <div>
-                            <h4 class="font-semibold text-lg mb-2">Topologia em Estrela</h4>
-                             <div class="img-container mb-2">
-                                <img src="https://blog.xpeducacao.com.br/wp-content/uploads/2023/07/2-4.png" alt="Diagrama da Topologia em Estrela" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Estrela';">
-                            </div>
-                            <p class="text-gray-600">Todos os dispositivos se conectam a um ponto central (hub ou switch). É a mais comum hoje. <strong>Vantagem:</strong> Uma falha em um cabo afeta apenas um dispositivo. <strong>Desvantagem:</strong> Se o ponto central falhar, toda a rede para.</p>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold text-lg mb-2">Topologia em Barramento (Bus)</h4>
-                             <div class="img-container mb-2">
-                                <img src="https://a3aengenharia.com.br/wp-content/uploads/2023/11/topologia-de-rede-em-barramento-1024x576.webp" alt="Diagrama da Topologia em Barramento" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Barramento';">
-                            </div>
-                            <p class="text-gray-600">Dispositivos conectados a um único cabo central (backbone). <strong>Vantagem:</strong> Baixo custo e simplicidade. <strong>Desvantagem:</strong> Um rompimento no cabo paralisa toda a rede e é difícil de diagnosticar.</p>
-                        </div>
-                         <div>
-                            <h4 class="font-semibold text-lg mb-2">Topologia em Anel (Ring)</h4>
-                             <div class="img-container mb-2">
-                                <img src="https://a3aengenharia.com.br/wp-content/uploads/2023/11/topologia-em-anel-1024x576.webp" alt="Diagrama da Topologia em Anel" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Anel';">
-                            </div>
-                            <p class="text-gray-600">Os dados circulam em uma única direção, passando por cada nó. <strong>Vantagem:</strong> Evita colisões de dados. <strong>Desvantagem:</strong> A falha de um único nó pode derrubar a rede.</p>
-                        </div>
-                         <div>
-                            <h4 class="font-semibold text-lg mb-2">Topologia em Malha (Mesh)</h4>
-                             <div class="img-container mb-2">
-                                <img src="https://images.edrawsoft.com/pt/articles/mesh-topology/full-mesh-topology.png" alt="Diagrama da Topologia em Malha" class="w-full rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/600x400/c7d2fe/4338ca?text=Topologia+Malha';">
-                            </div>
-                            <p class="text-gray-600">Cada dispositivo é conectado a todos os outros. <strong>Vantagem:</strong> Altíssima redundância e tolerância a falhas. <strong>Desvantagem:</strong> Custo extremamente elevado e complexidade.</p>
-                        </div>
-                    </div>
-                    <h4 class="font-semibold text-lg mt-8 mb-2">Outras Classificações:</h4>
-                    <p class="text-gray-700 leading-relaxed"><strong>Modos de Transmissão:</strong> <strong>Simplex</strong> (TV, rádio - um sentido), <strong>Half-duplex</strong> (walkie-talkie - dois sentidos, mas não simultâneo), <strong>Full-duplex</strong> (telefone - dois sentidos, simultâneo).</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Flash Cards -->
-        <section id="flashcards" class="py-12 bg-gray-100 -mx-6 px-6">
-            <h2 class="section-title">Flash Cards Interativos</h2>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="flash-card-grid">
-                <!-- Flash cards will be injected here by JavaScript -->
-            </div>
-        </section>
-
-        <!-- Section: Atividades -->
-        <section id="atividades" class="py-12">
-            <h2 class="section-title">Atividades Práticas</h2>
-            <div class="space-y-8" id="atividades-container">
-                <!-- Atividades will be injected here by JavaScript -->
-            </div>
-        </section>
-
-        <!-- Section: Simulado -->
-        <section id="simulado" class="py-12 bg-gray-100 -mx-6 px-6">
-            <h2 class="section-title">Simulado: Teste seu Conhecimento</h2>
-            <div class="max-w-3xl mx-auto text-center">
-                 <p class="text-gray-700 mb-6 text-lg">Pronto para testar seus conhecimentos? O simulado a seguir irá cobrir os principais tópicos em um ambiente focado. Boa sorte!</p>
-                 <button id="start-quiz-btn" class="btn text-lg transform hover:scale-105">Começar Simulado</button>
-            </div>
-        </section>
-    </main>
-    
-    <!-- Quiz Modal -->
-    <div id="quiz-modal" class="hidden">
-        <div class="quiz-modal-content">
-            <div id="quiz-content">
-                <div id="question-container" class="mb-6">
-                    <p id="question-counter" class="text-right text-gray-500 font-medium mb-2"></p>
-                    <h3 id="question-text" class="text-xl md:text-2xl font-semibold text-gray-800 mb-5"></h3>
-                    <div id="options-container" class="space-y-3"></div>
-                </div>
-                <div id="explanation-container" class="hidden mt-4 p-4 rounded-lg">
-                    <h4 id="explanation-title" class="font-bold mb-1"></h4>
-                    <p id="explanation-text"></p>
-                </div>
-                <div class="mt-6 text-right">
-                    <button id="next-question-btn" class="btn hidden">Próxima Questão</button>
-                </div>
-            </div>
-            <div id="quiz-result" class="hidden text-center">
-                <h3 class="text-2xl font-bold mb-4">Resultado do Simulado</h3>
-                <p id="score-text" class="text-5xl font-bold mb-2"></p>
-                <p id="feedback-text" class="text-lg text-gray-700 mb-6"></p>
-                <button id="close-quiz-btn" class="btn">Fechar</button>
-            </div>
-        </div>
+            </section>
+        </main>
     </div>
-
-    <footer class="bg-gray-800 text-white text-center p-6 mt-12">
-        <p>&copy; 2024 - Site de Estudo de Redes de Computadores. Desenvolvido para fins educacionais.</p>
-    </footer>
+    
+    <footer class="text-center p-4 bg-gray-800 text-white mt-8"><p>Boa sorte na prova!</p></footer>
 
     <script>
-        // --- Mobile Menu Logic ---
-        document.getElementById('mobile-menu-button').addEventListener('click', () => {
-            document.getElementById('mobile-menu').classList.toggle('hidden');
+        // Script para highlight da navegação no scroll
+        const sections = document.querySelectorAll('section, article');
+        const navLinks = document.querySelectorAll('#sidebar-nav a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 80) { current = section.getAttribute('id'); }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active-nav');
+                if (link.getAttribute('href').includes(current) && current) {
+                    link.classList.add('active-nav');
+                }
+            });
         });
 
-        // --- Data Definitions ---
-        const flashCardsData = [
-            { q: "O que foi a ARPANET?", a: "Uma rede experimental do Departamento de Defesa dos EUA, precursora da internet, criada para ser uma rede de comunicação descentralizada e robusta." },
-            { q: "Diferencie time-sharing de processamento em lote (batch).", a: "Batch: tarefas processadas em fila, sem interação do usuário. Time-sharing: múltiplos usuários interagem com um computador central simultaneamente." },
-            { q: "O que é um SLA (Service Level Agreement)?", a: "É um contrato que define as metas de desempenho e disponibilidade que um serviço de rede deve entregar, como por exemplo, 99.9% de tempo no ar (uptime)." },
-            { q: "Qual a principal desvantagem da topologia em barramento?", a: "Sua fragilidade. Um rompimento em qualquer ponto do cabo principal (backbone) paralisa toda a comunicação da rede." },
-            { q: "Para que serve a topologia em malha (Mesh)?", a: "É usada em situações que exigem altíssima confiabilidade e redundância, como em backbones da internet ou redes militares, onde a falha de um link não pode interromper a comunicação." },
-            { q: "Diferencie Simplex, Half-Duplex e Full-Duplex.", a: "Simplex: comunicação em um só sentido (ex: TV). Half-Duplex: nos dois sentidos, mas não simultaneamente (ex: walkie-talkie). Full-Duplex: nos dois sentidos e simultaneamente (ex: ligação telefônica)." },
+        // --- DADOS E LÓGICA PARA FLASHCARDS E QUIZ ---
+
+        const flashcardData = [
+            { q: "Quais são os 5 componentes de um processo de comunicação?", a: "Emissor, Receptor, Mensagem, Meio de Transmissão e Protocolo." },
+            { q: "Qual topologia física requer um concentrador (Hub/Switch)?", a: "Topologia em Estrela." },
+            { q: "Qual a principal desvantagem da topologia em Malha?", a: "Seu alto custo de implementação devido ao número de cabos e portas." },
+            { q: "O que o método Token Ring utiliza para controlar o acesso ao meio?", a: "Um 'token' (bastão), um pequeno pacote de dados que circula no anel." },
+            { q: "Qual a principal característica da topologia FDDI?", a: "O uso de um anel duplo de fibra óptica para redundância e alta velocidade." },
+            { q: "O que é topologia lógica?", a: "Descreve como os dados efetivamente fluem na rede, independentemente do layout físico dos cabos." }
+        ];
+
+        const mcqData = [
+            {
+                q: "Qual das seguintes topologias físicas conecta todos os dispositivos a um único ponto central?",
+                options: ["Anel", "Barramento", "Estrela", "Malha"],
+                answer: 2
+            },
+            {
+                q: "Em qual topologia os dados viajam em uma única direção, passando por cada nó até retornar ao ponto de origem?",
+                options: ["Barramento", "Estrela", "Anel", "Árvore"],
+                answer: 2
+            },
+            {
+                q: "Qual topologia física oferece a maior redundância e tolerância a falhas?",
+                options: ["Barramento", "Estrela", "Malha", "Anel"],
+                answer: 2
+            },
+            {
+                q: "Qual o nome da tecnologia que utiliza um anel duplo de fibra óptica para garantir resiliência?",
+                options: ["Ethernet", "Token Ring", "FDDI", "Arcnet"],
+                answer: 2
+            },
+            {
+                q: "Em uma topologia em barramento com cabo coaxial, um rompimento no cabo causa qual efeito?",
+                options: ["Apenas o nó afetado para.", "A rede fica mais lenta.", "Nada acontece.", "A rede inteira para de funcionar."],
+                answer: 3
+            },
+            {
+                q: "Uma rede física em Estrela que utiliza um HUB se comporta logicamente como qual topologia?",
+                options: ["Anel", "Estrela", "Barramento", "Malha"],
+                answer: 2
+            },
+            {
+                q: "Qual o principal objetivo de uma Rede de Computadores?",
+                options: ["Aumentar a velocidade de processamento de um único PC.", "Compartilhar recursos e informações.", "Apresentar vários computadores como um só.", "Rodar sistemas operacionais."],
+                answer: 1
+            },
+            {
+                q: "Qual das 'forças' da 'Corrente do Bem' foi pioneira no desenvolvimento da tecnologia Ethernet?",
+                options: ["IBM", "Departamento de Defesa (DoD)", "Xerox PARC", "Bell Labs"],
+                answer: 2
+            },
+            {
+                q: "A transmissão de um pacote para um grupo específico de nós na rede é chamada de:",
+                options: ["Unicast", "Broadcast", "Anycast", "Multicast"],
+                answer: 3
+            },
+            {
+                q: "Qual topologia é uma combinação hierárquica de múltiplas topologias em estrela?",
+                options: ["Híbrida", "Árvore", "Malha", "Anel"],
+                answer: 1
+            },
+            {
+                q: "O que é um 'protocolo' no contexto do processo de comunicação?",
+                options: ["O cabo físico usado para conectar.", "A informação sendo enviada.", "Um conjunto de regras que governa a comunicação.", "O dispositivo que recebe a mensagem."],
+                answer: 2
+            },
+            {
+                q: "Qual a principal vantagem da topologia em Estrela sobre a Barramento?",
+                options: ["Usa menos cabo.", "É mais barata.", "A falha de um cabo não derruba toda a rede.", "Não precisa de equipamento central."],
+                answer: 2
+            },
+            {
+                q: "O que é um Sistema Distribuído?",
+                options: ["Um sinônimo para Rede de Computadores.", "Uma rede sem conexão com a internet.", "Vários computadores que aparecem para o usuário como um único sistema coerente.", "Um único computador com vários monitores."],
+                answer: 2
+            },
+            {
+                q: "A forma como os dados efetivamente viajam pela rede, independentemente dos cabos, é definida pela topologia...",
+                options: ["Física", "Híbrida", "Elétrica", "Lógica"],
+                answer: 3
+            },
+            {
+                q: "O método de controle de acesso ao meio que usa um 'token' é característico de qual tecnologia?",
+                options: ["Ethernet CSMA/CD", "Wi-Fi CSMA/CA", "Token Ring", "FDDI"],
+                answer: 2
+            }
         ];
         
-        const atividadesData = [
-            { 
-                type: 'open',
-                q: "1. (Aberta) Explique com suas palavras por que a topologia em estrela se tornou o padrão para redes locais (LANs) modernas, superando a topologia em barramento.",
-                a: "A topologia em estrela se tornou padrão por sua robustez e facilidade de gerenciamento. Diferente do barramento, onde uma falha no cabo afeta toda a rede, na estrela, a falha de um cabo isola apenas um dispositivo. Além disso, o uso de switches como ponto central permite uma comunicação muito mais eficiente, pois os dados são direcionados apenas para a porta de destino, reduzindo colisões e melhorando o desempenho geral da rede."
-            },
-            {
-                type: 'closed',
-                q: "2. (Fechada) Uma empresa precisa garantir que sua rede continue funcionando mesmo que um dos cabos principais se rompa. Qual das seguintes topologias físicas seria a MAIS indicada para esse requisito de alta redundância?",
-                options: ["Barramento", "Estrela", "Anel", "Malha"],
-                answer: "Malha"
-            },
-            {
-                type: 'open',
-                q: "3. (Aberta) O que é um 'terminal burro' e qual era seu papel na era dos mainframes?",
-                a: "Um 'terminal burro' (dumb terminal) era um dispositivo de entrada/saída composto basicamente por um teclado e uma tela, sem capacidade de processamento própria. Seu papel era permitir que os usuários se conectassem e interagissem com um computador central (mainframe) em um sistema de tempo compartilhado (time-sharing), enviando comandos e recebendo os resultados."
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
             }
-        ];
+            return array;
+        }
 
-        const quizData = [
-             {
-                question: "Qual foi o principal objetivo da criação da ARPANET?",
-                options: ["Criar uma rede comercial para empresas", "Conectar universidades para pesquisa acadêmica", "Desenvolver uma rede de comunicação militar descentralizada e robusta", "Testar a tecnologia de fibra óptica"],
-                answer: "Desenvolver uma rede de comunicação militar descentralizada e robusta",
-                explanation: "A ARPANET foi financiada pelo Departamento de Defesa dos EUA com o objetivo principal de criar uma rede que pudesse resistir a falhas parciais, como em um cenário de guerra."
-            },
-            {
-                question: "O que o indicador MTTR mede em uma rede?",
-                options: ["A velocidade média da conexão", "O tempo médio que a rede funciona sem falhas", "O tempo médio necessário para consertar uma falha", "O número total de usuários conectados"],
-                answer: "O tempo médio necessário para consertar uma falha",
-                explanation: "MTTR significa 'Mean Time To Repair' (Tempo Médio Para Reparo). É uma métrica crucial para avaliar a eficiência da equipe de suporte e a rapidez na recuperação de um serviço."
-            },
-            {
-                question: "Em uma topologia em estrela, se o dispositivo central (switch) falhar, o que acontece?",
-                options: ["Apenas um computador é desconectado", "A comunicação entre dois computadores específicos para", "Nada, a rede continua funcionando normalmente", "Toda a rede para de funcionar"],
-                answer: "Toda a rede para de funcionar",
-                explanation: "A topologia em estrela possui um ponto único de falha: o dispositivo central. Se ele parar de funcionar, nenhum dispositivo conseguirá se comunicar com os outros."
-            },
-            {
-                question: "Um rádio FM, que apenas transmite som para os ouvintes, opera em qual modo de transmissão?",
-                options: ["Simplex", "Half-Duplex", "Full-Duplex", "Multiplex"],
-                answer: "Simplex",
-                explanation: "Simplex é o modo de transmissão unidirecional. O sinal flui em apenas uma direção, da estação de rádio para os ouvintes, sem canal de retorno."
-            },
-             {
-                question: "Qual topologia física é a mais cara e complexa de implementar devido ao grande número de cabos necessários?",
-                options: ["Barramento", "Estrela", "Anel", "Malha"],
-                answer: "Malha",
-                explanation: "Na topologia em malha (mesh), especialmente a malha total, cada dispositivo se conecta a todos os outros, exigindo uma quantidade exponencial de cabos e portas, o que a torna muito cara e complexa."
-            }
-        ];
+        const flashcardGrid = document.getElementById('flashcard-grid');
+        const quizContainer = document.getElementById('quiz-container');
+        const scoreElement = document.getElementById('score');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const restartButton = document.getElementById('restart-quiz');
+        let currentScore = 0;
+        let totalQuestions = 0;
 
-        // --- Flash Card Population ---
-        function populateFlashCards() {
-            const grid = document.getElementById('flash-card-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-            flashCardsData.forEach(item => {
+        function populateFlashcards() {
+            flashcardGrid.innerHTML = '';
+            shuffle([...flashcardData]).forEach(item => {
                 const cardContainer = document.createElement('div');
-                cardContainer.className = 'flash-card-container';
+                cardContainer.className = 'flashcard-container';
                 cardContainer.innerHTML = `
-                    <div class="flash-card">
-                        <div class="flash-card-face flash-card-front">${item.q}</div>
-                        <div class="flash-card-face flash-card-back">${item.a}</div>
+                    <div class="flashcard" onclick="this.classList.toggle('flipped')">
+                        <div class="flashcard-face flashcard-front">${item.q}</div>
+                        <div class="flashcard-face flashcard-back">${item.a}</div>
                     </div>
                 `;
-                cardContainer.querySelector('.flash-card').addEventListener('click', (e) => {
-                    e.currentTarget.classList.toggle('is-flipped');
-                });
-                grid.appendChild(cardContainer);
+                flashcardGrid.appendChild(cardContainer);
             });
         }
-        
-        // --- Atividades Population ---
-        function populateAtividades() {
-            const container = document.getElementById('atividades-container');
-            if (!container) return;
-            container.innerHTML = '';
-            atividadesData.forEach((item, index) => {
-                const atividadeDiv = document.createElement('div');
-                atividadeDiv.className = 'card';
 
-                let content = `<p class="text-lg font-semibold text-gray-700 mb-4">${item.q}</p>`;
+        function populateQuiz() {
+            quizContainer.innerHTML = '';
+            currentScore = 0;
+            const shuffledQuestions = shuffle([...mcqData]);
+            totalQuestions = shuffledQuestions.length;
+            totalQuestionsElement.textContent = totalQuestions;
+            updateScore();
+
+            shuffledQuestions.forEach((item, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question-block';
                 
-                if(item.type === 'closed') {
-                    content += `<div class="space-y-2 mb-4">` + item.options.map(opt => 
-                        `<label class="flex items-center space-x-3 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                            <input type="radio" name="ativ-${index}" value="${opt}" class="form-radio h-5 w-5 text-indigo-600">
-                            <span class="text-gray-700">${opt}</span>
-                        </label>`
-                    ).join('') + `</div>`;
-                }
+                const questionText = document.createElement('h3');
+                questionText.className = 'text-lg font-semibold mb-2';
+                questionText.textContent = `${index + 1}. ${item.q}`;
+                questionDiv.appendChild(questionText);
 
-                content += `<button class="btn btn-sm bg-gray-600 hover:bg-gray-700">Mostrar Resposta</button>
-                           <div id="answer-${index}" class="hidden mt-4 p-4 bg-green-100 text-green-800 rounded-lg">${item.a}</div>`;
-
-                atividadeDiv.innerHTML = content;
-
-                atividadeDiv.querySelector('button').addEventListener('click', (e) => {
-                     const ans = atividadeDiv.querySelector(`#answer-${index}`);
-                     ans.classList.toggle('hidden');
-                     e.target.textContent = ans.classList.contains('hidden') ? 'Mostrar Resposta' : 'Ocultar Resposta';
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options-container';
+                
+                item.options.forEach((option, optionIndex) => {
+                    const optionButton = document.createElement('button');
+                    optionButton.className = 'quiz-option';
+                    optionButton.textContent = option;
+                    optionButton.dataset.index = optionIndex;
+                    optionButton.onclick = (event) => checkAnswer(event, item.answer, optionsDiv);
+                    optionsDiv.appendChild(optionButton);
                 });
-                container.appendChild(atividadeDiv);
+
+                questionDiv.appendChild(optionsDiv);
+
+                const feedbackP = document.createElement('p');
+                feedbackP.className = 'feedback mt-2 text-sm font-medium';
+                questionDiv.appendChild(feedbackP);
+
+                quizContainer.appendChild(questionDiv);
             });
         }
-
-        // --- Quiz Logic ---
-        const quizModal = document.getElementById('quiz-modal');
-        const startQuizBtn = document.getElementById('start-quiz-btn');
-        const closeQuizBtn = document.getElementById('close-quiz-btn');
         
-        const quizContent = document.getElementById('quiz-content');
-        const quizResult = document.getElementById('quiz-result');
-        const nextQuestionBtn = document.getElementById('next-question-btn');
+        function checkAnswer(event, correctIndex, optionsContainer) {
+            const selectedButton = event.target;
+            const selectedIndex = parseInt(selectedButton.dataset.index);
+            const feedbackP = optionsContainer.nextElementSibling;
+
+            const allOptions = optionsContainer.querySelectorAll('.quiz-option');
+            allOptions.forEach(btn => btn.disabled = true);
+
+            if (selectedIndex === correctIndex) {
+                selectedButton.classList.add('correct');
+                feedbackP.textContent = 'Correto!';
+                feedbackP.className += ' text-green-700';
+                currentScore++;
+                updateScore();
+            } else {
+                selectedButton.classList.add('incorrect');
+                allOptions[correctIndex].classList.add('correct');
+                feedbackP.textContent = `Incorreto. A resposta certa é: "${allOptions[correctIndex].textContent}"`;
+                feedbackP.className += ' text-red-700';
+            }
+        }
+
+        function updateScore() {
+            scoreElement.textContent = currentScore;
+        }
+
+        restartButton.addEventListener('click', populateQuiz);
         
-        const questionText = document.getElementById('question-text');
-        const optionsContainer = document.getElementById('options-container');
-        const questionCounter = document.getElementById('question-counter');
-        const explanationContainer = document.getElementById('explanation-container');
-        const explanationTitle = document.getElementById('explanation-title');
-        const explanationText = document.getElementById('explanation-text');
-
-        const scoreText = document.getElementById('score-text');
-        const feedbackText = document.getElementById('feedback-text');
-
-        let currentQuestionIndex = 0;
-        let score = 0;
-
-        function startQuiz() {
-            currentQuestionIndex = 0;
-            score = 0;
-            quizContent.style.display = 'block';
-            quizResult.style.display = 'none';
-            quizModal.classList.remove('hidden');
-            quizModal.classList.add('active');
-            showQuestion();
-        }
-
-        function showQuestion() {
-            explanationContainer.classList.add('hidden');
-            nextQuestionBtn.classList.add('hidden');
-
-            const question = quizData[currentQuestionIndex];
-            questionText.textContent = question.question;
-            optionsContainer.innerHTML = '';
-            
-            question.options.forEach(option => {
-                const button = document.createElement('button');
-                button.textContent = option;
-                button.className = 'block w-full text-left p-4 rounded-lg bg-gray-100 hover:bg-indigo-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-300';
-                button.onclick = () => selectAnswer(button, option, question.answer, question.explanation);
-                optionsContainer.appendChild(button);
-            });
-            
-            questionCounter.textContent = `Questão ${currentQuestionIndex + 1} de ${quizData.length}`;
-        }
-        
-        function selectAnswer(button, selectedOption, correctAnswer, explanation) {
-            Array.from(optionsContainer.children).forEach(btn => {
-                btn.disabled = true;
-                if (btn.textContent === correctAnswer) {
-                    btn.className = 'block w-full text-left p-4 rounded-lg bg-green-500 text-white';
-                }
-            });
-
-            if (selectedOption !== correctAnswer) {
-                button.className = 'block w-full text-left p-4 rounded-lg bg-red-500 text-white';
-                explanationTitle.textContent = 'Explicação:';
-                explanationText.textContent = explanation;
-                explanationContainer.className = 'mt-4 p-4 rounded-lg bg-red-100 text-red-800';
-                explanationContainer.classList.remove('hidden');
-            } else {
-                score++;
-                explanationTitle.textContent = 'Correto!';
-                explanationText.textContent = 'Você acertou a questão.';
-                explanationContainer.className = 'mt-4 p-4 rounded-lg bg-green-100 text-green-800';
-                explanationContainer.classList.remove('hidden');
-            }
-            
-            nextQuestionBtn.classList.remove('hidden');
-            if (currentQuestionIndex === quizData.length - 1) {
-                nextQuestionBtn.textContent = 'Ver Resultado Final';
-            }
-        }
-
-        function showNextQuestion() {
-            currentQuestionIndex++;
-            if (currentQuestionIndex < quizData.length) {
-                showQuestion();
-            } else {
-                showResult();
-            }
-        }
-
-        function showResult() {
-            quizContent.style.display = 'none';
-            quizResult.style.display = 'block';
-            
-            const percentage = Math.round((score / quizData.length) * 100);
-            scoreText.textContent = `${percentage}%`;
-            
-            let colorClass = 'text-red-500';
-            if (percentage >= 80) {
-                feedbackText.textContent = 'Excelente! Você tem um ótimo conhecimento sobre redes.';
-                colorClass = 'text-green-600';
-            } else if (percentage >= 50) {
-                feedbackText.textContent = 'Bom trabalho! Continue estudando para aprimorar alguns conceitos.';
-                colorClass = 'text-yellow-500';
-            } else {
-                feedbackText.textContent = 'Não desanime! Revise os resumos e flash cards e tente novamente.';
-            }
-            scoreText.className = `text-5xl font-bold mb-2 ${colorClass}`;
-        }
-
-        function closeQuiz() {
-            quizModal.classList.add('hidden');
-            quizModal.classList.remove('active');
-            // Reset button text
-            nextQuestionBtn.textContent = 'Próxima Questão';
-        }
-
-        // --- Event Listeners ---
-        startQuizBtn.addEventListener('click', startQuiz);
-        nextQuestionBtn.addEventListener('click', showNextQuestion);
-        closeQuizBtn.addEventListener('click', closeQuiz);
-
-        // --- Initial Population on page load ---
+        // Initial population
         document.addEventListener('DOMContentLoaded', () => {
-            populateFlashCards();
-            populateAtividades();
+             populateFlashcards();
+             populateQuiz();
         });
+
     </script>
 </body>
 </html>
