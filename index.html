@@ -1,346 +1,381 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Guia de Estudo: Redes de Computadores</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Modelos de Referência OSI e TCP/IP</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+        :root {
+            --cor-primaria: #004d40;
+            --cor-secundaria: #00897b;
+            --cor-destaque: #ffab00;
+            --cor-texto: #333;
+            --cor-fundo: #f4f4f9;
+            --cor-clara: #fff;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--cor-fundo);
+            color: var(--cor-texto);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
         }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            background: var(--cor-clara);
+            padding: 20px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--cor-primaria);
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            color: var(--cor-primaria);
+            font-size: 2.5em;
+            margin: 0;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
         .section-title {
-            border-bottom: 2px solid #3b82f6; /* blue-500 */
-            padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
+            color: var(--cor-secundaria);
+            border-left: 5px solid var(--cor-destaque);
+            padding-left: 10px;
+            font-size: 1.8em;
+            margin-bottom: 15px;
         }
+
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
         .card {
-            background-color: white;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            transition: transform 0.2s;
+            background: #e0f2f1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            width: calc(50% - 20px);
+            min-width: 300px;
+            box-sizing: border-box;
+            transition: transform 0.3s ease;
         }
+
         .card:hover {
             transform: translateY(-5px);
         }
-        .active-nav {
-            background-color: #3b82f6; /* blue-500 */
-            color: white;
+
+        .card h3 {
+            color: var(--cor-primaria);
+            margin-top: 0;
         }
         
-        /* Estilos para Flashcard */
-        .flashcard-container { perspective: 1000px; }
-        .flashcard {
-            width: 100%; height: 200px; position: relative;
-            transform-style: preserve-3d; transition: transform 0.6s; cursor: pointer;
+        .list-container {
+            display: flex;
+            flex-direction: column;
         }
-        .flashcard.flipped { transform: rotateY(180deg); }
-        .flashcard-face {
-            position: absolute; width: 100%; height: 100%;
-            backface-visibility: hidden; display: flex; justify-content: center;
-            align-items: center; padding: 20px; border-radius: 0.75rem;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center;
+        
+        .list-group {
+            flex: 1;
+            margin-bottom: 20px;
         }
-        .flashcard-front { background-color: #e0e7ff; color: #374151; font-weight: 500; }
-        .flashcard-back { background-color: #dbeafe; color: #1e3a8a; transform: rotateY(180deg); }
 
-        /* Estilos para o Quiz */
-        .quiz-option {
-            display: block; width: 100%; text-align: left;
-            padding: 0.75rem 1rem; margin-top: 0.5rem;
-            border: 1px solid #d1d5db; border-radius: 0.5rem;
-            background-color: #f9fafb; transition: all 0.2s;
+        .list-group h4 {
+            color: var(--cor-secundaria);
+            border-bottom: 2px solid var(--cor-primaria);
+            padding-bottom: 5px;
+            margin-bottom: 10px;
         }
-        .quiz-option:not(:disabled):hover {
-            border-color: #3b82f6; background-color: #eff6ff;
+
+        .layer-list {
+            list-style-type: none;
+            padding: 0;
         }
-        .quiz-option:disabled { cursor: not-allowed; }
-        .correct { background-color: #dcfce7 !important; border-color: #22c55e !important; color: #15803d; }
-        .incorrect { background-color: #fee2e2 !important; border-color: #ef4444 !important; color: #b91c1c; }
+
+        .layer-list li {
+            background: var(--cor-fundo);
+            border: 1px solid #ccc;
+            margin-bottom: 8px;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .layer-list li::before {
+            content: counter(layer-counter);
+            counter-increment: layer-counter;
+            background: var(--cor-primaria);
+            color: var(--cor-clara);
+            font-weight: bold;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+        
+        .layer-item-content {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .layer-name {
+            font-weight: bold;
+            color: var(--cor-primaria);
+        }
+
+        .layer-description {
+            font-size: 0.9em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .comparison-table th, .comparison-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        .comparison-table th {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-clara);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comparison-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .comparison-table td strong {
+            color: var(--cor-primaria);
+        }
+
+        .comparison-table td ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .comparison-table td ul li {
+            margin-bottom: 5px;
+        }
+        
+        .image-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #888;
+            font-size: 0.9em;
+        }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
+    <div class="container">
+        <header>
+            <h1>Modelos de Referência para Redes</h1>
+            <p>Um guia de estudo para OSI e TCP/IP</p>
+        </header>
 
-    <header class="bg-white shadow-md p-4 sticky top-0 z-50">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-blue-600">Guia de Estudo: Redes de Computadores</h1>
-        </div>
-    </header>
+        <section class="section">
+            <h2 class="section-title">O Modelo OSI</h2>
+            <p>
+                [cite_start]O Modelo de Referência para Interconexão de Sistemas Abertos (OSI) foi criado pela ISO (Organização Internacional para Padronização) para padronizar a comunicação entre sistemas de diferentes fabricantes, combatendo a heterogeneidade que existia no setor no final dos anos 70[cite: 3, 9, 10]. [cite_start]Ele é um modelo de referência, o que significa que define a arquitetura do sistema e os serviços que cada camada deve fornecer, mas não dita como isso deve ser feito[cite: 40, 41].
+            </p>
+            <p>
+                A adoção de um modelo em camadas simplifica o projeto, a implementação e a manutenção de uma rede, dividindo a complexidade do problema em partes menores e bem definidas. [cite_start]Cada camada se concentra em sua função específica e interage apenas com as camadas adjacentes[cite: 23, 25, 26, 28, 29, 31, 33].
+            </p>
 
-    <div class="flex">
-        <aside class="w-1/4 min-h-screen bg-gray-800 text-white p-4 sticky top-[72px] h-screen overflow-y-auto">
-            <nav id="sidebar-nav">
-                <h2 class="text-lg font-semibold mb-4">Tópicos de Estudo</h2>
-                <ul class="space-y-2">
-                    <li><a href="#processo-comunicacao" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Processo de Comunicação</a></li>
-                    <li><a href="#corrente-bem" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">A Corrente do Bem</a></li>
-                    <li><a href="#conceitos-formais" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Conceitos Formais</a></li>
-                    <li><a href="#topologias" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Topologias de Rede</a></li>
-                    <li><a href="#videos-apoio" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Vídeos de Apoio</a></li>
-                    <li><a href="#flashcards" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Flashcards Interativos</a></li>
-                    <li><a href="#questoes-pratica" class="block p-2 rounded-lg hover:bg-gray-700 transition-colors">Quiz Interativo</a></li>
-                </ul>
-            </nav>
-        </aside>
-
-        <main class="w-3/4 p-8">
-            <!-- Seções de Resumo -->
-            <section id="processo-comunicacao" class="mb-12"><h2 class="text-3xl font-bold section-title">Processo de Comunicação</h2><div class="card"><p>A comunicação de dados é a troca de informações entre dispositivos através de um meio de transmissão. Requer cinco componentes: Emissor, Receptor, Mensagem, Meio de Transmissão e Protocolo.</p></div></section>
-            <section id="corrente-bem" class="mb-12"><h2 class="text-3xl font-bold section-title">A Corrente do Bem</h2><div class="card"><p>O desenvolvimento das redes foi impulsionado por 3 frentes: <strong>IBM</strong> (Mainframes, time-sharing), <strong>DoD dos EUA</strong> (ARPANET, TCP/IP) e <strong>Xerox PARC</strong> (Ethernet).</p></div></section>
-            <section id="conceitos-formais" class="mb-12"><h2 class="text-3xl font-bold section-title">Conceitos Formais</h2><div class="grid md:grid-cols-2 gap-8"><div class="card"><h3 class="text-xl font-semibold mb-2">Redes de Computadores</h3><p>Conjunto de computadores autônomos interconectados para <strong>compartilhamento de recursos</strong>.</p></div><div class="card"><h3 class="text-xl font-semibold mb-2">Sistemas Distribuídos</h3><p>Coleção de computadores independentes que se apresenta ao usuário como um <strong>único sistema coerente</strong>, visando desempenho e confiabilidade.</p></div></div></section>
-            <section id="topologias" class="mb-12"><h2 class="text-3xl font-bold section-title">Topologias de Rede</h2><div class="card"><p>A <strong>Topologia Física</strong> é o layout dos cabos, enquanto a <strong>Topologia Lógica</strong> é como os dados fluem. Principais físicas: Anel (convencional, Token Ring, FDDI com anel duplo), Barramento, Estrela, Malha e Árvore.</p></div></section>
-            
-            <!-- Vídeos -->
-            <section id="videos-apoio" class="mb-12">
-                <h2 class="text-3xl font-bold section-title">Vídeos de Apoio</h2>
-                <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div class="card"><h3 class="text-xl font-semibold mb-2">Fundamentos e Protocolos</h3><iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/0gYOztu8UnQ" title="Vídeo sobre Protocolos de Comunicação" frameborder="0" allowfullscreen></iframe></div>
-                    <div class="card"><h3 class="text-xl font-semibold mb-2">Topologias de Rede</h3><iframe class="w-full h-64 rounded-lg" src="https://www.youtube.com/embed/YcjX-rzg9Sc" title="Vídeo sobre Topologias de Rede" frameborder="0" allowfullscreen></iframe></div>
-                </div>
-            </section>
-            
-            <!-- Flashcards -->
-            <section id="flashcards" class="mb-12">
-                <h2 class="text-3xl font-bold section-title">Flashcards Interativos</h2>
-                <p class="mb-4">Clique nos cards para virar e ver a resposta.</p>
-                <div id="flashcard-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </section>
-            
-            <!-- Quiz Interativo -->
-            <section id="questoes-pratica" class="mb-12">
-                <h2 class="text-3xl font-bold section-title">Quiz Interativo</h2>
+            <div class="card-container">
                 <div class="card">
-                    <div class="flex justify-between items-center mb-4">
-                        <p>Teste seus conhecimentos. As questões são embaralhadas a cada recarga.</p>
-                        <div class="text-lg font-bold">Pontuação: <span id="score">0</span> / <span id="total-questions">0</span></div>
+                    <h3>7 Camadas do Modelo OSI</h3>
+                    <div class="list-container">
+                        <ul class="layer-list" style="counter-reset: layer-counter 7;">
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Aplicação</span>
+                                    [cite_start]<span class="layer-description">Aplicações de usuário e interface com a rede (Ex: navegadores, e-mail)[cite: 352, 649, 650].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Apresentação</span>
+                                    [cite_start]<span class="layer-description">Formato de dados, sintaxe comum, criptografia, compressão e tradução de dados[cite: 328, 332, 352, 643, 644].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Sessão</span>
+                                    [cite_start]<span class="layer-description">Gerencia e sincroniza o diálogo e a conversa entre hosts[cite: 320, 323, 352, 629, 631, 634].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Transporte</span>
+                                    [cite_start]<span class="layer-description">Comunicação confiável fim-a-fim, qualidade de serviço, controle de fluxo e de sequência[cite: 89, 297, 299, 352, 618, 620].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Rede</span>
+                                    [cite_start]<span class="layer-description">Roteamento, endereçamento lógico (IP) e seleção de caminhos[cite: 285, 286, 287, 288, 352, 597, 598].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Enlace</span>
+                                    [cite_start]<span class="layer-description">Endereçamento físico (MAC), controle de acesso ao meio, detecção e correção de erros[cite: 263, 264, 266, 270, 352, 576, 578].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Física</span>
+                                    <span class="layer-description">Características mecânicas, elétricas e procedurais da interface. [cite_start]Transfere bits sem se preocupar com o significado[cite: 250, 251, 252, 254, 352, 560, 561].</span>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <div id="quiz-container" class="space-y-8">
-                        <!-- Questões do Quiz serão inseridas aqui via JS -->
-                    </div>
-                    <button id="restart-quiz" class="mt-8 bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors">Reiniciar Quiz</button>
                 </div>
-            </section>
-        </main>
-    </div>
-    
-    <footer class="text-center p-4 bg-gray-800 text-white mt-8"><p>Boa sorte na prova!</p></footer>
+                <div class="card">
+                    <h3>Serviços e Protocolos</h3>
+                    <p>
+                        É importante diferenciar serviço de protocolo. Um <strong>serviço</strong> é o que uma camada oferece à camada superior, funcionando como uma interface. [cite_start]Ele define as operações disponíveis, mas não como elas são implementadas[cite: 219, 220].
+                    </p>
+                    <p>
+                        [cite_start]Já o <strong>protocolo</strong> é um conjunto de regras que governa o formato e o significado dos dados trocados entre entidades pares (entidades na mesma camada, mas em sistemas diferentes)[cite: 221, 223]. [cite_start]Um protocolo é usado para implementar um serviço e pode ser modificado sem afetar a camada superior, desde que o serviço permaneça o mesmo[cite: 222].
+                    </p>
+                    <p>
+                        [cite_start]A comunicação entre sistemas ocorre em nível de camadas, ou seja, a camada de Aplicação de um sistema se comunica com a camada de Aplicação de outro, e assim por diante até o nível Físico, onde a comunicação é de fato realizada[cite: 90].
+                    </p>
+                </div>
+            </div>
+        </section>
 
-    <script>
-        // Script para highlight da navegação no scroll
-        const sections = document.querySelectorAll('section, article');
-        const navLinks = document.querySelectorAll('#sidebar-nav a');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 80) { current = section.getAttribute('id'); }
-            });
-            navLinks.forEach(link => {
-                link.classList.remove('active-nav');
-                if (link.getAttribute('href').includes(current) && current) {
-                    link.classList.add('active-nav');
-                }
-            });
-        });
-
-        // --- DADOS E LÓGICA PARA FLASHCARDS E QUIZ ---
-
-        const flashcardData = [
-            { q: "Quais são os 5 componentes de um processo de comunicação?", a: "Emissor, Receptor, Mensagem, Meio de Transmissão e Protocolo." },
-            { q: "Qual topologia física requer um concentrador (Hub/Switch)?", a: "Topologia em Estrela." },
-            { q: "Qual a principal desvantagem da topologia em Malha?", a: "Seu alto custo de implementação devido ao número de cabos e portas." },
-            { q: "O que o método Token Ring utiliza para controlar o acesso ao meio?", a: "Um 'token' (bastão), um pequeno pacote de dados que circula no anel." },
-            { q: "Qual a principal característica da topologia FDDI?", a: "O uso de um anel duplo de fibra óptica para redundância e alta velocidade." },
-            { q: "O que é topologia lógica?", a: "Descreve como os dados efetivamente fluem na rede, independentemente do layout físico dos cabos." }
-        ];
-
-        const mcqData = [
-            {
-                q: "Qual das seguintes topologias físicas conecta todos os dispositivos a um único ponto central?",
-                options: ["Anel", "Barramento", "Estrela", "Malha"],
-                answer: 2
-            },
-            {
-                q: "Em qual topologia os dados viajam em uma única direção, passando por cada nó até retornar ao ponto de origem?",
-                options: ["Barramento", "Estrela", "Anel", "Árvore"],
-                answer: 2
-            },
-            {
-                q: "Qual topologia física oferece a maior redundância e tolerância a falhas?",
-                options: ["Barramento", "Estrela", "Malha", "Anel"],
-                answer: 2
-            },
-            {
-                q: "Qual o nome da tecnologia que utiliza um anel duplo de fibra óptica para garantir resiliência?",
-                options: ["Ethernet", "Token Ring", "FDDI", "Arcnet"],
-                answer: 2
-            },
-            {
-                q: "Em uma topologia em barramento com cabo coaxial, um rompimento no cabo causa qual efeito?",
-                options: ["Apenas o nó afetado para.", "A rede fica mais lenta.", "Nada acontece.", "A rede inteira para de funcionar."],
-                answer: 3
-            },
-            {
-                q: "Uma rede física em Estrela que utiliza um HUB se comporta logicamente como qual topologia?",
-                options: ["Anel", "Estrela", "Barramento", "Malha"],
-                answer: 2
-            },
-            {
-                q: "Qual o principal objetivo de uma Rede de Computadores?",
-                options: ["Aumentar a velocidade de processamento de um único PC.", "Compartilhar recursos e informações.", "Apresentar vários computadores como um só.", "Rodar sistemas operacionais."],
-                answer: 1
-            },
-            {
-                q: "Qual das 'forças' da 'Corrente do Bem' foi pioneira no desenvolvimento da tecnologia Ethernet?",
-                options: ["IBM", "Departamento de Defesa (DoD)", "Xerox PARC", "Bell Labs"],
-                answer: 2
-            },
-            {
-                q: "A transmissão de um pacote para um grupo específico de nós na rede é chamada de:",
-                options: ["Unicast", "Broadcast", "Anycast", "Multicast"],
-                answer: 3
-            },
-            {
-                q: "Qual topologia é uma combinação hierárquica de múltiplas topologias em estrela?",
-                options: ["Híbrida", "Árvore", "Malha", "Anel"],
-                answer: 1
-            },
-            {
-                q: "O que é um 'protocolo' no contexto do processo de comunicação?",
-                options: ["O cabo físico usado para conectar.", "A informação sendo enviada.", "Um conjunto de regras que governa a comunicação.", "O dispositivo que recebe a mensagem."],
-                answer: 2
-            },
-            {
-                q: "Qual a principal vantagem da topologia em Estrela sobre a Barramento?",
-                options: ["Usa menos cabo.", "É mais barata.", "A falha de um cabo não derruba toda a rede.", "Não precisa de equipamento central."],
-                answer: 2
-            },
-            {
-                q: "O que é um Sistema Distribuído?",
-                options: ["Um sinônimo para Rede de Computadores.", "Uma rede sem conexão com a internet.", "Vários computadores que aparecem para o usuário como um único sistema coerente.", "Um único computador com vários monitores."],
-                answer: 2
-            },
-            {
-                q: "A forma como os dados efetivamente viajam pela rede, independentemente dos cabos, é definida pela topologia...",
-                options: ["Física", "Híbrida", "Elétrica", "Lógica"],
-                answer: 3
-            },
-            {
-                q: "O método de controle de acesso ao meio que usa um 'token' é característico de qual tecnologia?",
-                options: ["Ethernet CSMA/CD", "Wi-Fi CSMA/CA", "Token Ring", "FDDI"],
-                answer: 2
-            }
-        ];
-        
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        const flashcardGrid = document.getElementById('flashcard-grid');
-        const quizContainer = document.getElementById('quiz-container');
-        const scoreElement = document.getElementById('score');
-        const totalQuestionsElement = document.getElementById('total-questions');
-        const restartButton = document.getElementById('restart-quiz');
-        let currentScore = 0;
-        let totalQuestions = 0;
-
-        function populateFlashcards() {
-            flashcardGrid.innerHTML = '';
-            shuffle([...flashcardData]).forEach(item => {
-                const cardContainer = document.createElement('div');
-                cardContainer.className = 'flashcard-container';
-                cardContainer.innerHTML = `
-                    <div class="flashcard" onclick="this.classList.toggle('flipped')">
-                        <div class="flashcard-face flashcard-front">${item.q}</div>
-                        <div class="flashcard-face flashcard-back">${item.a}</div>
+        <section class="section">
+            <h2 class="section-title">O Modelo TCP/IP</h2>
+            <p>
+                [cite_start]O modelo TCP/IP, base da internet, surgiu de um projeto financiado pela ARPA (Advanced Research Project Agency) em 1969[cite: 677]. [cite_start]Ele não foi desenvolvido como um modelo formal, mas sim a partir da evolução de protocolos que se tornaram padrões militares[cite: 456, 699, 892].
+            </p>
+            <p>
+                [cite_start]O modelo TCP/IP é mais simples que o OSI, pois possui menos camadas[cite: 455]. [cite_start]Ele combina as camadas de Sessão e Apresentação do OSI na sua camada de Aplicação, e as camadas de Enlace e Física em uma única camada de Acesso à Rede[cite: 452, 454].
+            </p>
+            <div class="card-container">
+                <div class="card">
+                    <h3>Camadas do Modelo TCP/IP</h3>
+                    <div class="list-container">
+                        <ul class="layer-list" style="counter-reset: layer-counter 4;">
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Aplicação</span>
+                                    <span class="layer-description">Suporta aplicações de usuário, combinando as funcionalidades de Apresentação, Sessão e Aplicação do OSI. [cite_start]Exemplos: FTP, HTTP, Telnet, SMTP[cite: 452, 741, 742, 755, 756, 767].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Transporte</span>
+                                    <span class="layer-description">Garante a comunicação fim-a-fim entre hosts. [cite_start]Usa TCP (confiável, orientado à conexão) e UDP (não-confiável, não orientado à conexão)[cite: 445, 729, 731, 733, 776].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Internet</span>
+                                    <span class="layer-description">Responsável pelo endereçamento (IP) e roteamento de pacotes na rede. [cite_start]Não garante a entrega do pacote[cite: 445, 605, 720, 721, 802].</span>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="layer-item-content">
+                                    <span class="layer-name">Acesso à Rede</span>
+                                    <span class="layer-description">Combina as camadas Física e de Enlace do OSI. [cite_start]Cuida dos detalhes de hardware e interfaceamento físico com a rede[cite: 454, 826, 828, 829].</span>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                `;
-                flashcardGrid.appendChild(cardContainer);
-            });
-        }
+                </div>
+                <div class="card">
+                    <h3>Encapsulamento</h3>
+                    <p>
+                        No modelo TCP/IP, quando uma aplicação envia dados, eles passam por cada camada, da mais alta para a mais baixa. [cite_start]Cada camada adiciona sua própria informação de controle (cabeçalho) aos dados da camada superior[cite: 842]. [cite_start]A unidade de dados resultante é chamada de <strong>PDU (Protocol Data Unit)</strong>[cite: 149].
+                    </p>
+                    <p>
+                        Essa adição de informações é conhecida como <strong>overhead</strong>. [cite_start]É a diferença entre o tamanho inicial e o tamanho final do pacote[cite: 855]. [cite_start]A camada Física, por fim, transforma o pacote em uma sequência de bits para a transmissão[cite: 843]. [cite_start]No destino, o processo é o inverso: cada camada retira o cabeçalho correspondente e entrega os dados para a camada superior[cite: 118].
+                    </p>
+                </div>
+            </div>
+        </section>
 
-        function populateQuiz() {
-            quizContainer.innerHTML = '';
-            currentScore = 0;
-            const shuffledQuestions = shuffle([...mcqData]);
-            totalQuestions = shuffledQuestions.length;
-            totalQuestionsElement.textContent = totalQuestions;
-            updateScore();
+        <section class="section">
+            <h2 class="section-title">Comparativo entre os Modelos</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Semelhanças</th>
+                        <th>Diferenças</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <ul>
+                                [cite_start]<li>Ambos são baseados em camadas[cite: 442, 505].</li>
+                                [cite_start]<li>Ambos possuem camadas de Aplicação, Transporte e Rede (ou Internet) comparáveis[cite: 443, 445].</li>
+                                [cite_start]<li>Ambos presumem a utilização de tecnologia de comutação de pacotes[cite: 448].</li>
+                            </ul>
+                        </td>
+                        <td>
+                            <ul>
+                                [cite_start]<li>O TCP/IP combina as camadas de Sessão e Apresentação do OSI em sua camada de Aplicação[cite: 452].</li>
+                                [cite_start]<li>O TCP/IP combina as camadas Física e de Enlace do OSI em uma única camada[cite: 454].</li>
+                                [cite_start]<li>O modelo OSI é mais geral, enquanto o TCP/IP é mais específico e orientado a protocolos que se tornaram padrão da internet[cite: 457, 877, 894].</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
 
-            shuffledQuestions.forEach((item, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'question-block';
-                
-                const questionText = document.createElement('h3');
-                questionText.className = 'text-lg font-semibold mb-2';
-                questionText.textContent = `${index + 1}. ${item.q}`;
-                questionDiv.appendChild(questionText);
-
-                const optionsDiv = document.createElement('div');
-                optionsDiv.className = 'options-container';
-                
-                item.options.forEach((option, optionIndex) => {
-                    const optionButton = document.createElement('button');
-                    optionButton.className = 'quiz-option';
-                    optionButton.textContent = option;
-                    optionButton.dataset.index = optionIndex;
-                    optionButton.onclick = (event) => checkAnswer(event, item.answer, optionsDiv);
-                    optionsDiv.appendChild(optionButton);
-                });
-
-                questionDiv.appendChild(optionsDiv);
-
-                const feedbackP = document.createElement('p');
-                feedbackP.className = 'feedback mt-2 text-sm font-medium';
-                questionDiv.appendChild(feedbackP);
-
-                quizContainer.appendChild(questionDiv);
-            });
-        }
-        
-        function checkAnswer(event, correctIndex, optionsContainer) {
-            const selectedButton = event.target;
-            const selectedIndex = parseInt(selectedButton.dataset.index);
-            const feedbackP = optionsContainer.nextElementSibling;
-
-            const allOptions = optionsContainer.querySelectorAll('.quiz-option');
-            allOptions.forEach(btn => btn.disabled = true);
-
-            if (selectedIndex === correctIndex) {
-                selectedButton.classList.add('correct');
-                feedbackP.textContent = 'Correto!';
-                feedbackP.className += ' text-green-700';
-                currentScore++;
-                updateScore();
-            } else {
-                selectedButton.classList.add('incorrect');
-                allOptions[correctIndex].classList.add('correct');
-                feedbackP.textContent = `Incorreto. A resposta certa é: "${allOptions[correctIndex].textContent}"`;
-                feedbackP.className += ' text-red-700';
-            }
-        }
-
-        function updateScore() {
-            scoreElement.textContent = currentScore;
-        }
-
-        restartButton.addEventListener('click', populateQuiz);
-        
-        // Initial population
-        document.addEventListener('DOMContentLoaded', () => {
-             populateFlashcards();
-             populateQuiz();
-        });
-
-    </script>
+        <div class="footer">
+            <p>Conteúdo baseado no material de estudo sobre Redes de Computadores.</p>
+        </div>
+    </div>
 </body>
 </html>
