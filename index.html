@@ -88,6 +88,10 @@
             margin-bottom: 15px;
         }
 
+        h3 {
+            color: var(--cor-primaria);
+        }
+
         /* Conteúdo do Flashcard */
         .flashcard-container {
             display: flex;
@@ -95,7 +99,7 @@
             gap: 20px;
             justify-content: center;
         }
-        
+
         .flashcard {
             width: 250px;
             height: 150px;
@@ -142,7 +146,8 @@
             font-size: 0.9em;
             transform: rotateY(180deg);
         }
-        
+
+        /* Conteúdo do Quiz */
         .quiz-container .question {
             margin-bottom: 20px;
             background-color: #e0f2f1;
@@ -200,6 +205,15 @@
             margin-top: 10px;
             font-weight: bold;
         }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #ddd;
+            color: #888;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
@@ -219,10 +233,10 @@
             <section class="section">
                 <h2 class="section-title">O Modelo OSI</h2>
                 <p>
-                    [cite_start]O **Modelo de Referência para Interconexão de Sistemas Abertos (OSI)** foi criado pela ISO (Organização Internacional para Padronização) para padronizar a comunicação entre sistemas de diferentes fabricantes, combatendo a heterogeneidade que existia no setor no final dos anos 70[cite: 448]. [cite_start]Ele é um modelo de referência, o que significa que define a arquitetura do sistema e os serviços que cada camada deve fornecer, mas não dita como isso deve ser feito[cite: 485, 486].
+                    [cite_start]O **Modelo de Referência para Interconexão de Sistemas Abertos (OSI)** foi criado pela ISO (Organização Internacional para Padronização) para padronizar a comunicação entre sistemas de diferentes fabricantes, combatendo a heterogeneidade que existia no setor no final dos anos 70[cite: 3, 9, 10]. [cite_start]Ele é um modelo de referência, o que significa que define a arquitetura do sistema e os serviços que cada camada deve fornecer, mas não dita como isso deve ser feito[cite: 40, 41].
                 </p>
                 <p>
-                    A adoção de um modelo em camadas simplifica o projeto, a implementação e a manutenção de uma rede, dividindo a complexidade do problema em partes menores e bem definidas. [cite_start]Cada camada se concentra em sua função específica e interage apenas com as camadas adjacentes[cite: 471, 532].
+                    [cite_start]A adoção de um modelo em camadas simplifica o projeto, a implementação e a manutenção de uma rede, dividindo a complexidade do problema em partes menores e bem definidas[cite: 23, 25, 26, 28, 29, 31, 33]. Cada camada se concentra em sua função específica e interage apenas com as camadas adjacentes.
                 </p>
 
                 <h3>7 Camadas do Modelo OSI</h3>
@@ -230,50 +244,50 @@
                     O modelo OSI é dividido em sete camadas, cada uma com funções específicas:
                 </p>
                 <ul>
-                    [cite_start]<li>**Camada 7: Aplicação** - Fornece a interface para as aplicações do usuário e provê serviços como transferência de arquivos e acesso a bancos de dados[cite: 192, 193, 197, 199, 202, 203].</li>
-                    [cite_start]<li>**Camada 6: Apresentação** - Realiza transformações nos dados, como tradução, compressão e criptografia, para que a sintaxe seja a mesma para ambos os sistemas[cite: 182, 186, 187, 188, 773, 777].</li>
-                    [cite_start]<li>**Camada 5: Sessão** - Permite que aplicações em hosts diferentes compartilhem uma sessão, controlando o diálogo e a sincronização entre eles[cite: 167, 172, 174, 177, 765, 768].</li>
-                    <li>**Camada 4: Transporte** - É a primeira camada fim-a-fim, responsável por dividir mensagens em pacotes e garantir uma comunicação confiável. [cite_start]Oferece controle de fluxo e multiplexação de conexões[cite: 156, 157, 161, 163, 164, 165].</li>
-                    [cite_start]<li>**Camada 3: Rede** - Controla as operações da sub-rede, como roteamento, controle de congestionamento e interconexão de redes[cite: 133, 140, 146, 147]. [cite_start]A camada não garante que o pacote chegue ao destino[cite: 148, 149].</li>
-                    <li>**Camada 2: Enlace** - Trata do fluxo de dados no enlace entre transmissor e receptor, incluindo controle de fluxo e detecção e correção de erros. [cite_start]Não permite ligação entre redes distintas[cite: 118, 119, 120, 121, 126].</li>
-                    <li>**Camada 1: Física** - Trata das características mecânicas, elétricas e de procedimento para conexão física. [cite_start]Transmite uma sequência de bits e não se preocupa com o significado deles[cite: 103, 104, 106, 107, 108, 109].</li>
+                    [cite_start]<li>**Camada 7: Aplicação** - Fornece a interface para as aplicações do usuário e provê serviços como transferência de arquivos e acesso a bancos de dados[cite: 352, 649, 650].</li>
+                    [cite_start]<li>**Camada 6: Apresentação** - Realiza transformações nos dados, como tradução, compressão e criptografia, para que a sintaxe seja a mesma para ambos os sistemas[cite: 328, 332, 352, 643, 644].</li>
+                    [cite_start]<li>**Camada 5: Sessão** - Permite que aplicações em hosts diferentes compartilhem uma sessão, controlando o diálogo e a sincronização entre eles[cite: 320, 323, 352, 629, 631, 634].</li>
+                    <li>**Camada 4: Transporte** - É a primeira camada fim-a-fim, responsável por dividir mensagens em pacotes e garantir uma comunicação confiável. [cite_start]Oferece controle de fluxo e multiplexação de conexões[cite: 89, 297, 299, 352, 618, 620].</li>
+                    <li>**Camada 3: Rede** - Controla as operações da sub-rede, como roteamento, controle de congestionamento e interconexão de redes. [cite_start]A camada não garante que o pacote chegue ao destino[cite: 285, 286, 287, 288, 352, 597, 598, 605].</li>
+                    <li>**Camada 2: Enlace** - Trata do fluxo de dados no enlace entre transmissor e receptor, incluindo controle de fluxo e detecção e correção de erros. [cite_start]Não permite ligação entre redes distintas[cite: 263, 264, 266, 270, 352, 576, 578].</li>
+                    <li>**Camada 1: Física** - Trata das características mecânicas, elétricas e de procedimento para conexão física. [cite_start]Transmite uma sequência de bits e não se preocupa com o significado deles[cite: 250, 251, 252, 254, 352, 560, 561].</li>
                 </ul>
 
                 <h3 class="section-title">Serviços e Protocolos</h3>
                 <p>
-                    É importante diferenciar **serviço** de **protocolo**. Um serviço é um conjunto de primitivas que uma camada oferece à camada superior adjacente, funcionando como uma interface. [cite_start]Ele define as operações disponíveis, mas não como elas são implementadas[cite: 664, 665].
+                    É importante diferenciar **serviço** de **protocolo**. Um serviço é um conjunto de primitivas que uma camada oferece à camada superior adjacente, funcionando como uma interface. [cite_start]Ele define as operações disponíveis, mas não como elas são implementadas[cite: 219, 220].
                 </p>
                 <p>
-                    [cite_start]Já o **protocolo** é um conjunto de regras que governa o formato e o significado dos quadros, pacotes ou mensagens trocados entre entidades pares (entidades na mesma camada, mas em sistemas diferentes)[cite: 666]. [cite_start]Um protocolo é usado para implementar um serviço e pode ser modificado sem afetar a camada superior, desde que o serviço permaneça o mesmo[cite: 667].
+                    [cite_start]Já o protocolo é um conjunto de regras que governa o formato e o significado dos quadros, pacotes ou mensagens trocados entre entidades pares (entidades na mesma camada, mas em sistemas diferentes)[cite: 221, 223]. [cite_start]Um protocolo é usado para implementar um serviço e pode ser modificado sem afetar a camada superior, desde que o serviço permaneça o mesmo[cite: 222].
                 </p>
                 <p>
-                    [cite_start]A comunicação entre sistemas ocorre em nível de camadas, ou seja, a camada de Aplicação de um sistema se comunica com a camada de Aplicação de outro, e assim por diante até o nível Físico, onde a comunicação é de fato realizada[cite: 535].
+                    [cite_start]A comunicação entre sistemas ocorre em nível de camadas, ou seja, a camada de Aplicação de um sistema se comunica com a camada de Aplicação de outro, e assim por diante até o nível Físico, onde a comunicação é de fato realizada[cite: 90].
                 </p>
 
                 <hr>
 
                 <h2 class="section-title">O Modelo TCP/IP</h2>
                 <p>
-                    [cite_start]O modelo TCP/IP, base da internet, surgiu de um projeto financiado pela ARPA (Advanced Research Project Agency) em 1969[cite: 217, 220]. [cite_start]Ele não foi desenvolvido como um modelo formal, mas sim a partir da evolução de protocolos que se tornaram padrões militares[cite: 242].
+                    [cite_start]O modelo TCP/IP, base da internet, surgiu de um projeto financiado pela ARPA (Advanced Research Project Agency) em 1969[cite: 677]. [cite_start]Ele não foi desenvolvido como um modelo formal, mas sim a partir da evolução de protocolos que se tornaram padrões militares[cite: 456, 699, 892].
                 </p>
                 <p>
-                    [cite_start]O modelo TCP/IP é mais simples que o OSI, pois possui menos camadas[cite: 442, 455, 887]. [cite_start]Ele combina as camadas de Sessão e Apresentação do OSI na sua camada de Aplicação, e as camadas de Enlace e Física em uma única camada de Acesso à Rede[cite: 452, 454, 897, 899].
+                    [cite_start]O modelo TCP/IP é mais simples que o OSI, pois possui menos camadas[cite: 455]. [cite_start]Ele combina as camadas de Sessão e Apresentação do OSI na sua camada de Aplicação, e as camadas de Enlace e Física em uma única camada de Acesso à Rede[cite: 452, 454].
                 </p>
 
                 <h3>Camadas do Modelo TCP/IP</h3>
                 <ul>
-                    <li>**Camada 4: Aplicação** - Este nível trata dos detalhes específicos de cada aplicação. Suporta aplicações de usuário, combinando as funcionalidades de Apresentação, Sessão e Aplicação do OSI. [cite_start]Exemplos: Telnet, FTP, SMTP, SNMP[cite: 297, 298, 304, 305, 307, 308, 310, 311, 898].</li>
-                    <li>**Camada 3: Transporte** - Proporciona um fluxo de dados entre dois hosts (fim-a-fim). [cite_start]Usa TCP (confiável, orientado à conexão) e UDP (não-confiável, não orientado à conexão)[cite: 319, 321, 331, 444].</li>
-                    <li>**Camada 2: Inter-Rede** - Garantir a transmissão de pacotes independente da localização dos hosts. [cite_start]Funções incluem endereçamento (IP) e roteamento[cite: 345, 346, 352, 355]. [cite_start]Não garante a entrega do pacote[cite: 148, 149].</li>
-                    <li>**Camada 1: Interface de Rede** - O modelo não especifica muitos detalhes desta camada. Abrange o driver de dispositivo no SO e a correspondente placa de rede. [cite_start]Trata dos detalhes de hardware necessários para o interfaceamento físico com a rede[cite: 367, 369, 370, 371, 372].</li>
+                    <li>**Camada 4: Aplicação** - Este nível trata dos detalhes específicos de cada aplicação. [cite_start]Suporta aplicações de usuário, combinando as funcionalidades de Apresentação, Sessão e Aplicação do OSI[cite: 452]. [cite_start]Exemplos: Telnet, FTP, SMTP, SNMP[cite: 741, 742, 755, 756, 767].</li>
+                    [cite_start]<li>**Camada 3: Transporte** - Proporciona um fluxo de dados entre dois hosts (fim-a-fim)[cite: 776]. [cite_start]Usa TCP (confiável, orientado à conexão) e UDP (não-confiável, não orientado à conexão)[cite: 445, 729, 731, 733].</li>
+                    [cite_start]<li>**Camada 2: Inter-Rede** - Garante a transmissão de pacotes independente da localização dos hosts[cite: 802]. [cite_start]Funções incluem endereçamento (IP) e roteamento[cite: 720, 721]. [cite_start]Não garante a entrega do pacote[cite: 605].</li>
+                    <li>**Camada 1: Interface de Rede** - O modelo não especifica muitos detalhes desta camada. [cite_start]Abrange o driver de dispositivo no SO e a correspondente placa de rede[cite: 826]. [cite_start]Trata dos detalhes de hardware necessários para o interfaceamento físico com a rede[cite: 454, 828, 829].</li>
                 </ul>
 
                 <h3 class="section-title">Encapsulamento</h3>
                 <p>
-                    No modelo TCP/IP, quando uma aplicação envia dados, eles passam por cada camada, da mais alta para a mais baixa. [cite_start]Cada camada adiciona sua própria informação de controle (cabeçalho) aos dados da camada superior[cite: 384, 385]. [cite_start]A unidade de dados resultante é chamada de **PDU (Protocol Data Unit)**[cite: 594].
+                    No modelo TCP/IP, quando uma aplicação envia dados, eles passam por cada camada, da mais alta para a mais baixa. [cite_start]Cada camada adiciona sua própria informação de controle (cabeçalho) aos dados da camada superior[cite: 842]. [cite_start]A unidade de dados resultante é chamada de **PDU (Protocol Data Unit)**[cite: 149].
                 </p>
                 <p>
-                    Essa adição de informações é conhecida como **overhead**. [cite_start]É a diferença entre o tamanho inicial e o tamanho final do pacote[cite: 398, 399]. [cite_start]A camada Física, por fim, transforma o pacote em uma sequência de bits para a transmissão[cite: 107]. [cite_start]No destino, o processo é o inverso: cada camada retira o cabeçalho correspondente e entrega os dados para a camada superior[cite: 563].
+                    Essa adição de informações é conhecida como **overhead**. [cite_start]É a diferença entre o tamanho inicial e o tamanho final do pacote[cite: 855]. [cite_start]A camada Física, por fim, transforma o pacote em uma sequência de bits para a transmissão[cite: 843]. [cite_start]No destino, o processo é o inverso: cada camada retira o cabeçalho correspondente e entrega os dados para a camada superior[cite: 118].
                 </p>
 
                 <hr>
@@ -290,16 +304,16 @@
                         <tr>
                             <td>
                                 <ul>
-                                    [cite_start]<li>Ambos são baseados em camadas[cite: 442, 887].</li>
-                                    [cite_start]<li>Ambos possuem camadas de Aplicação, Transporte e Rede (ou Internet) comparáveis[cite: 888, 890].</li>
-                                    [cite_start]<li>Ambos presumem a utilização de tecnologia de comutação de pacotes[cite: 892, 893].</li>
+                                    [cite_start]<li>Ambos são baseados em camadas[cite: 442, 505].</li>
+                                    [cite_start]<li>Ambos possuem camadas de Aplicação, Transporte e Rede (ou Internet) comparáveis[cite: 443, 445].</li>
+                                    [cite_start]<li>Ambos presumem a utilização de tecnologia de comutação de pacotes[cite: 448].</li>
                                 </ul>
                             </td>
                             <td>
                                 <ul>
-                                    [cite_start]<li>O TCP/IP combina as camadas de Sessão e Apresentação do OSI em sua camada de Aplicação[cite: 897, 898].</li>
-                                    [cite_start]<li>O TCP/IP combina as camadas Física e de Enlace do OSI em uma única camada[cite: 899].</li>
-                                    [cite_start]<li>O modelo OSI é mais geral, enquanto o TCP/IP é mais específico e orientado a protocolos que se tornaram padrão da internet[cite: 419, 437, 901].</li>
+                                    [cite_start]<li>O TCP/IP combina as camadas de Sessão e Apresentação do OSI em sua camada de Aplicação[cite: 452].</li>
+                                    [cite_start]<li>O TCP/IP combina as camadas Física e de Enlace do OSI em uma única camada[cite: 454].</li>
+                                    [cite_start]<li>O modelo OSI é mais geral, enquanto o TCP/IP é mais específico e orientado a protocolos que se tornaram padrão da internet[cite: 457, 877, 894].</li>
                                 </ul>
                             </td>
                         </tr>
@@ -647,133 +661,133 @@
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que é a camada Física do Modelo OSI?</div>
-                        [cite_start]<div class="flashcard-back">É a camada responsável pelas características mecânicas e elétricas, e pela transmissão de bits sem se preocupar com o seu significado[cite: 104, 106, 107, 108].</div>
+                        [cite_start]<div class="flashcard-back">É a camada responsável pelas características mecânicas e elétricas, e pela transmissão de bits sem se preocupar com o seu significado[cite: 560, 561].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual a principal função da camada de Rede no Modelo OSI?</div>
-                        [cite_start]<div class="flashcard-back">Controlar as operações da sub-rede, como roteamento e endereçamento lógico (IP)[cite: 140].</div>
+                        [cite_start]<div class="flashcard-back">Controlar as operações da sub-rede, como roteamento e endereçamento lógico (IP)[cite: 597, 598].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que é um "serviço" no contexto do Modelo OSI?</div>
-                        <div class="flashcard-back">É o que uma camada oferece à camada imediatamente superior. [cite_start]Define o que é feito, mas não como[cite: 664, 665].</div>
+                        <div class="flashcard-back">É o que uma camada oferece à camada imediatamente superior. [cite_start]Define o que é feito, mas não como[cite: 219, 220].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual a diferença entre TCP e UDP?</div>
-                        <div class="flashcard-back">TCP é orientado à conexão e confiável. [cite_start]UDP é não orientado à conexão e não confiável, sendo mais rápido[cite: 321, 331, 335].</div>
+                        <div class="flashcard-back">TCP é orientado à conexão e confiável. [cite_start]UDP é não orientado à conexão e não confiável, sendo mais rápido[cite: 731, 733].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que é o encapsulamento no Modelo TCP/IP?</div>
-                        [cite_start]<div class="flashcard-back">É o processo de adicionar informações de controle (cabeçalhos) aos dados em cada camada, à medida que eles descem na pilha de protocolos[cite: 384, 385].</div>
+                        [cite_start]<div class="flashcard-back">É o processo de adicionar informações de controle (cabeçalhos) aos dados em cada camada, à medida que eles descem na pilha de protocolos[cite: 842].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual é o objetivo principal do Modelo OSI?</div>
-                        [cite_start]<div class="flashcard-back">Padronizar a comunicação para permitir a interconexão de sistemas de diferentes fabricantes (interoperabilidade)[cite: 448].</div>
+                        [cite_start]<div class="flashcard-back">Padronizar a comunicação para permitir a interconexão de sistemas de diferentes fabricantes (interoperabilidade)[cite: 9].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual camada do Modelo OSI é a primeira a ser "fim-a-fim"?</div>
-                        [cite_start]<div class="flashcard-back">A camada de Transporte[cite: 161, 742].</div>
+                        [cite_start]<div class="flashcard-back">A camada de Transporte[cite: 297].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que a camada de Apresentação faz?</div>
-                        [cite_start]<div class="flashcard-back">Lida com a sintaxe dos dados, realizando compressão, criptografia e tradução para um formato comum[cite: 186, 187, 188, 773].</div>
+                        [cite_start]<div class="flashcard-back">Lida com a sintaxe dos dados, realizando compressão, criptografia e tradução para um formato comum[cite: 328, 332].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que significa "overhead" em redes?</div>
-                        [cite_start]<div class="flashcard-back">É a diferença entre o tamanho inicial dos dados e o tamanho final do pacote após a adição de cabeçalhos por cada camada[cite: 398, 399].</div>
+                        [cite_start]<div class="flashcard-back">É a diferença entre o tamanho inicial dos dados e o tamanho final do pacote após a adição de cabeçalhos por cada camada[cite: 855].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual a principal função do protocolo IP?</div>
-                        [cite_start]<div class="flashcard-back">Endereçamento lógico dos hosts e roteamento de pacotes na camada Inter-Rede do TCP/IP[cite: 352, 355].</div>
+                        [cite_start]<div class="flashcard-back">Endereçamento lógico dos hosts e roteamento de pacotes na camada Inter-Rede do TCP/IP[cite: 286, 288].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">A camada de Sessão controla o uso de "tokens" para qual finalidade?</div>
-                        [cite_start]<div class="flashcard-back">Para gerenciar o controle de diálogo em conexões half-duplex, definindo quem tem a vez de transmitir[cite: 176, 768, 769].</div>
+                        [cite_start]<div class="flashcard-back">Para gerenciar o controle de diálogo em conexões half-duplex, definindo quem tem a vez de transmitir[cite: 323].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que é a PDU?</div>
-                        [cite_start]<div class="flashcard-back">PDU significa Protocol Data Unit (Unidade de Dados de Protocolo), que é a unidade de dados de uma camada, após a adição do cabeçalho de protocolo[cite: 594].</div>
+                        [cite_start]<div class="flashcard-back">PDU significa Protocol Data Unit (Unidade de Dados de Protocolo), que é a unidade de dados de uma camada, após a adição do cabeçalho de protocolo[cite: 149].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Cite uma semelhança entre OSI e TCP/IP.</div>
-                        [cite_start]<div class="flashcard-back">Ambos são baseados em camadas e presumem a tecnologia de comutação de pacotes[cite: 442, 887, 892, 893].</div>
+                        [cite_start]<div class="flashcard-back">Ambos são baseados em camadas e presumem a tecnologia de comutação de pacotes[cite: 442, 448].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual camada do TCP/IP combina as funções de Enlace e Física do OSI?</div>
-                        [cite_start]<div class="flashcard-back">A camada de Interface de Rede ou Acesso à Rede[cite: 369, 414, 899].</div>
+                        [cite_start]<div class="flashcard-back">A camada de Interface de Rede ou Acesso à Rede[cite: 454].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual a principal diferença entre os modelos OSI e TCP/IP?</div>
-                        [cite_start]<div class="flashcard-back">O OSI é um modelo teórico genérico, enquanto o TCP/IP foi criado a partir de protocolos práticos e é mais específico para a Internet[cite: 419, 437, 901].</div>
+                        [cite_start]<div class="flashcard-back">O OSI é um modelo teórico genérico, enquanto o TCP/IP foi criado a partir de protocolos práticos e é mais específico para a Internet[cite: 457].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">O que é o endereço MAC?</div>
-                        [cite_start]<div class="flashcard-back">É um endereço físico de 12 dígitos hexadecimais que identifica uma placa de rede na camada de Enlace[cite: 128, 129].</div>
+                        [cite_start]<div class="flashcard-back">É um endereço físico de 12 dígitos hexadecimais que identifica uma placa de rede na camada de Enlace[cite: 585, 586].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual camada do OSI lida com a detecção e correção de erros?</div>
-                        [cite_start]<div class="flashcard-back">A camada de Enlace[cite: 121, 709, 721].</div>
+                        [cite_start]<div class="flashcard-back">A camada de Enlace[cite: 264].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual a função da camada de Transporte?</div>
-                        [cite_start]<div class="flashcard-back">Ela provê a comunicação fim-a-fim, segmentando e garantindo a entrega confiável dos dados entre os hosts[cite: 157, 163, 742].</div>
+                        [cite_start]<div class="flashcard-back">Ela provê a comunicação fim-a-fim, segmentando e garantindo a entrega confiável dos dados entre os hosts[cite: 297, 299, 618, 620].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Cite um exemplo de protocolo da camada de Aplicação no TCP/IP.</div>
-                        [cite_start]<div class="flashcard-back">FTP (File Transfer Protocol), Telnet ou SMTP (Simple Mail Transfer Protocol)[cite: 285, 311].</div>
+                        [cite_start]<div class="flashcard-back">FTP (File Transfer Protocol), Telnet ou SMTP (Simple Mail Transfer Protocol)[cite: 742, 767].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">No Modelo OSI, o que é um SAP (Service Access Point)?</div>
-                        [cite_start]<div class="flashcard-back">É uma interface lógica entre duas camadas adjacentes, por onde a camada superior solicita serviços da camada inferior[cite: 679, 680, 681].</div>
+                        [cite_start]<div class="flashcard-back">É uma interface lógica entre duas camadas adjacentes, por onde a camada superior solicita serviços da camada inferior[cite: 235, 236].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">Qual camada do TCP/IP não garante que o pacote chegue ao destino?</div>
-                        [cite_start]<div class="flashcard-back">A camada Inter-Rede[cite: 264, 269, 270, 271, 345, 346].</div>
+                        [cite_start]<div class="flashcard-back">A camada Inter-Rede[cite: 605].</div>
                     </div>
                 </div>
                 <div class="flashcard">
                     <div class="flashcard-inner">
                         <div class="flashcard-front">No modelo OSI, qual camada é responsável por lidar com a tradução e compressão de dados?</div>
-                        [cite_start]<div class="flashcard-back">A camada de Apresentação[cite: 186, 188].</div>
+                        [cite_start]<div class="flashcard-back">A camada de Apresentação[cite: 328, 332].</div>
                     </div>
                 </div>
             </div>
@@ -839,4 +853,4 @@
         });
     </script>
 </body>
-</html>
+</html> 
