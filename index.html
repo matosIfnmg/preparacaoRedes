@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelos de Referência OSI e TCP/IP</title>
+    <title>Estudo de Redes: OSI & TCP/IP</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
 
@@ -47,6 +47,35 @@
             margin: 0;
         }
 
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .nav-link {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: var(--cor-secundaria);
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .nav-link.active {
+            background-color: var(--cor-secundaria);
+            color: var(--cor-clara);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .section {
             margin-bottom: 30px;
         }
@@ -59,154 +88,117 @@
             margin-bottom: 15px;
         }
 
-        .card-container {
+        /* Conteúdo do Flashcard */
+        .flashcard-container {
             display: flex;
-            justify-content: space-around;
-            gap: 20px;
             flex-wrap: wrap;
-        }
-
-        .card {
-            background: #e0f2f1;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            width: calc(50% - 20px);
-            min-width: 300px;
-            box-sizing: border-box;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-        }
-
-        .card h3 {
-            color: var(--cor-primaria);
-            margin-top: 0;
-        }
-        
-        .list-container {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .list-group {
-            flex: 1;
-            margin-bottom: 20px;
-        }
-
-        .list-group h4 {
-            color: var(--cor-secundaria);
-            border-bottom: 2px solid var(--cor-primaria);
-            padding-bottom: 5px;
-            margin-bottom: 10px;
-        }
-
-        .layer-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .layer-list li {
-            background: var(--cor-fundo);
-            border: 1px solid #ccc;
-            margin-bottom: 8px;
-            padding: 10px 15px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-        }
-        
-        .layer-list li::before {
-            content: counter(layer-counter);
-            counter-increment: layer-counter;
-            background: var(--cor-primaria);
-            color: var(--cor-clara);
-            font-weight: bold;
-            width: 25px;
-            height: 25px;
-            border-radius: 50%;
-            display: flex;
+            gap: 20px;
             justify-content: center;
-            align-items: center;
-            margin-right: 15px;
-            flex-shrink: 0;
         }
         
-        .layer-item-content {
+        .flashcard {
+            width: 250px;
+            height: 150px;
+            perspective: 1000px;
+        }
+
+        .flashcard-inner {
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: column;
-            width: 100%;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+            text-align: center;
+            box-sizing: border-box;
         }
 
-        .layer-name {
+        .flashcard-front {
+            background-color: var(--cor-primaria);
+            color: var(--cor-clara);
+            font-size: 1.1em;
             font-weight: bold;
-            color: var(--cor-primaria);
         }
 
-        .layer-description {
-            font-size: 0.9em;
-            color: #555;
-            margin-top: 5px;
-        }
-
-        .comparison-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        .comparison-table th, .comparison-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: left;
-        }
-
-        .comparison-table th {
+        .flashcard-back {
             background-color: var(--cor-secundaria);
             color: var(--cor-clara);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-        
-        .comparison-table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        .comparison-table td strong {
-            color: var(--cor-primaria);
-        }
-
-        .comparison-table td ul {
-            padding-left: 20px;
-            margin: 0;
-        }
-
-        .comparison-table td ul li {
-            margin-bottom: 5px;
-        }
-        
-        .image-container {
-            text-align: center;
-            margin: 30px 0;
-        }
-
-        .image-container img {
-            max-width: 100%;
-            height: auto;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .footer {
-            text-align: center;
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 2px solid #ddd;
-            color: #888;
             font-size: 0.9em;
+            transform: rotateY(180deg);
+        }
+        
+        .quiz-container .question {
+            margin-bottom: 20px;
+            background-color: #e0f2f1;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .quiz-container .question h4 {
+            color: var(--cor-primaria);
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .quiz-container .options label {
+            display: block;
+            margin-bottom: 10px;
+            cursor: pointer;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .quiz-container .options label:hover {
+            background-color: #e8e8e8;
+        }
+
+        .quiz-container .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .quiz-container .correct {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .quiz-container .incorrect {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .quiz-container .show-answer-btn {
+            background-color: var(--cor-destaque);
+            color: var(--cor-texto);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -214,168 +206,637 @@
     <div class="container">
         <header>
             <h1>Modelos de Referência para Redes</h1>
-            <p>Um guia de estudo para OSI e TCP/IP</p>
+            <p>Um guia de estudo completo para OSI e TCP/IP</p>
         </header>
 
-        <section class="section">
-            <h2 class="section-title">O Modelo OSI</h2>
-            <p>
-                [cite_start]O Modelo de Referência para Interconexão de Sistemas Abertos (OSI) foi criado pela ISO (Organização Internacional para Padronização) para padronizar a comunicação entre sistemas de diferentes fabricantes, combatendo a heterogeneidade que existia no setor no final dos anos 70[cite: 3, 9, 10]. [cite_start]Ele é um modelo de referência, o que significa que define a arquitetura do sistema e os serviços que cada camada deve fornecer, mas não dita como isso deve ser feito[cite: 40, 41].
-            </p>
-            <p>
-                A adoção de um modelo em camadas simplifica o projeto, a implementação e a manutenção de uma rede, dividindo a complexidade do problema em partes menores e bem definidas. [cite_start]Cada camada se concentra em sua função específica e interage apenas com as camadas adjacentes[cite: 23, 25, 26, 28, 29, 31, 33].
-            </p>
+        <nav class="nav-tabs">
+            <a href="#estudo" class="nav-link active">Estudo</a>
+            <a href="#simulado" class="nav-link">Simulado</a>
+            <a href="#flashcards" class="nav-link">Flashcards</a>
+        </nav>
 
-            <div class="card-container">
-                <div class="card">
-                    <h3>7 Camadas do Modelo OSI</h3>
-                    <div class="list-container">
-                        <ul class="layer-list" style="counter-reset: layer-counter 7;">
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Aplicação</span>
-                                    [cite_start]<span class="layer-description">Aplicações de usuário e interface com a rede (Ex: navegadores, e-mail)[cite: 352, 649, 650].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Apresentação</span>
-                                    [cite_start]<span class="layer-description">Formato de dados, sintaxe comum, criptografia, compressão e tradução de dados[cite: 328, 332, 352, 643, 644].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Sessão</span>
-                                    [cite_start]<span class="layer-description">Gerencia e sincroniza o diálogo e a conversa entre hosts[cite: 320, 323, 352, 629, 631, 634].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Transporte</span>
-                                    [cite_start]<span class="layer-description">Comunicação confiável fim-a-fim, qualidade de serviço, controle de fluxo e de sequência[cite: 89, 297, 299, 352, 618, 620].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Rede</span>
-                                    [cite_start]<span class="layer-description">Roteamento, endereçamento lógico (IP) e seleção de caminhos[cite: 285, 286, 287, 288, 352, 597, 598].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Enlace</span>
-                                    [cite_start]<span class="layer-description">Endereçamento físico (MAC), controle de acesso ao meio, detecção e correção de erros[cite: 263, 264, 266, 270, 352, 576, 578].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Física</span>
-                                    <span class="layer-description">Características mecânicas, elétricas e procedurais da interface. [cite_start]Transfere bits sem se preocupar com o significado[cite: 250, 251, 252, 254, 352, 560, 561].</span>
-                                </div>
-                            </li>
-                        </ul>
+        <div id="estudo" class="tab-content active">
+            <section class="section">
+                <h2 class="section-title">O Modelo OSI</h2>
+                <p>
+                    [cite_start]O **Modelo de Referência para Interconexão de Sistemas Abertos (OSI)** foi criado pela ISO (Organização Internacional para Padronização) para padronizar a comunicação entre sistemas de diferentes fabricantes, combatendo a heterogeneidade que existia no setor no final dos anos 70[cite: 448]. [cite_start]Ele é um modelo de referência, o que significa que define a arquitetura do sistema e os serviços que cada camada deve fornecer, mas não dita como isso deve ser feito[cite: 485, 486].
+                </p>
+                <p>
+                    A adoção de um modelo em camadas simplifica o projeto, a implementação e a manutenção de uma rede, dividindo a complexidade do problema em partes menores e bem definidas. [cite_start]Cada camada se concentra em sua função específica e interage apenas com as camadas adjacentes[cite: 471, 532].
+                </p>
+
+                <h3>7 Camadas do Modelo OSI</h3>
+                <p>
+                    O modelo OSI é dividido em sete camadas, cada uma com funções específicas:
+                </p>
+                <ul>
+                    [cite_start]<li>**Camada 7: Aplicação** - Fornece a interface para as aplicações do usuário e provê serviços como transferência de arquivos e acesso a bancos de dados[cite: 192, 193, 197, 199, 202, 203].</li>
+                    [cite_start]<li>**Camada 6: Apresentação** - Realiza transformações nos dados, como tradução, compressão e criptografia, para que a sintaxe seja a mesma para ambos os sistemas[cite: 182, 186, 187, 188, 773, 777].</li>
+                    [cite_start]<li>**Camada 5: Sessão** - Permite que aplicações em hosts diferentes compartilhem uma sessão, controlando o diálogo e a sincronização entre eles[cite: 167, 172, 174, 177, 765, 768].</li>
+                    <li>**Camada 4: Transporte** - É a primeira camada fim-a-fim, responsável por dividir mensagens em pacotes e garantir uma comunicação confiável. [cite_start]Oferece controle de fluxo e multiplexação de conexões[cite: 156, 157, 161, 163, 164, 165].</li>
+                    [cite_start]<li>**Camada 3: Rede** - Controla as operações da sub-rede, como roteamento, controle de congestionamento e interconexão de redes[cite: 133, 140, 146, 147]. [cite_start]A camada não garante que o pacote chegue ao destino[cite: 148, 149].</li>
+                    <li>**Camada 2: Enlace** - Trata do fluxo de dados no enlace entre transmissor e receptor, incluindo controle de fluxo e detecção e correção de erros. [cite_start]Não permite ligação entre redes distintas[cite: 118, 119, 120, 121, 126].</li>
+                    <li>**Camada 1: Física** - Trata das características mecânicas, elétricas e de procedimento para conexão física. [cite_start]Transmite uma sequência de bits e não se preocupa com o significado deles[cite: 103, 104, 106, 107, 108, 109].</li>
+                </ul>
+
+                <h3 class="section-title">Serviços e Protocolos</h3>
+                <p>
+                    É importante diferenciar **serviço** de **protocolo**. Um serviço é um conjunto de primitivas que uma camada oferece à camada superior adjacente, funcionando como uma interface. [cite_start]Ele define as operações disponíveis, mas não como elas são implementadas[cite: 664, 665].
+                </p>
+                <p>
+                    [cite_start]Já o **protocolo** é um conjunto de regras que governa o formato e o significado dos quadros, pacotes ou mensagens trocados entre entidades pares (entidades na mesma camada, mas em sistemas diferentes)[cite: 666]. [cite_start]Um protocolo é usado para implementar um serviço e pode ser modificado sem afetar a camada superior, desde que o serviço permaneça o mesmo[cite: 667].
+                </p>
+                <p>
+                    [cite_start]A comunicação entre sistemas ocorre em nível de camadas, ou seja, a camada de Aplicação de um sistema se comunica com a camada de Aplicação de outro, e assim por diante até o nível Físico, onde a comunicação é de fato realizada[cite: 535].
+                </p>
+
+                <hr>
+
+                <h2 class="section-title">O Modelo TCP/IP</h2>
+                <p>
+                    [cite_start]O modelo TCP/IP, base da internet, surgiu de um projeto financiado pela ARPA (Advanced Research Project Agency) em 1969[cite: 217, 220]. [cite_start]Ele não foi desenvolvido como um modelo formal, mas sim a partir da evolução de protocolos que se tornaram padrões militares[cite: 242].
+                </p>
+                <p>
+                    [cite_start]O modelo TCP/IP é mais simples que o OSI, pois possui menos camadas[cite: 442, 455, 887]. [cite_start]Ele combina as camadas de Sessão e Apresentação do OSI na sua camada de Aplicação, e as camadas de Enlace e Física em uma única camada de Acesso à Rede[cite: 452, 454, 897, 899].
+                </p>
+
+                <h3>Camadas do Modelo TCP/IP</h3>
+                <ul>
+                    <li>**Camada 4: Aplicação** - Este nível trata dos detalhes específicos de cada aplicação. Suporta aplicações de usuário, combinando as funcionalidades de Apresentação, Sessão e Aplicação do OSI. [cite_start]Exemplos: Telnet, FTP, SMTP, SNMP[cite: 297, 298, 304, 305, 307, 308, 310, 311, 898].</li>
+                    <li>**Camada 3: Transporte** - Proporciona um fluxo de dados entre dois hosts (fim-a-fim). [cite_start]Usa TCP (confiável, orientado à conexão) e UDP (não-confiável, não orientado à conexão)[cite: 319, 321, 331, 444].</li>
+                    <li>**Camada 2: Inter-Rede** - Garantir a transmissão de pacotes independente da localização dos hosts. [cite_start]Funções incluem endereçamento (IP) e roteamento[cite: 345, 346, 352, 355]. [cite_start]Não garante a entrega do pacote[cite: 148, 149].</li>
+                    <li>**Camada 1: Interface de Rede** - O modelo não especifica muitos detalhes desta camada. Abrange o driver de dispositivo no SO e a correspondente placa de rede. [cite_start]Trata dos detalhes de hardware necessários para o interfaceamento físico com a rede[cite: 367, 369, 370, 371, 372].</li>
+                </ul>
+
+                <h3 class="section-title">Encapsulamento</h3>
+                <p>
+                    No modelo TCP/IP, quando uma aplicação envia dados, eles passam por cada camada, da mais alta para a mais baixa. [cite_start]Cada camada adiciona sua própria informação de controle (cabeçalho) aos dados da camada superior[cite: 384, 385]. [cite_start]A unidade de dados resultante é chamada de **PDU (Protocol Data Unit)**[cite: 594].
+                </p>
+                <p>
+                    Essa adição de informações é conhecida como **overhead**. [cite_start]É a diferença entre o tamanho inicial e o tamanho final do pacote[cite: 398, 399]. [cite_start]A camada Física, por fim, transforma o pacote em uma sequência de bits para a transmissão[cite: 107]. [cite_start]No destino, o processo é o inverso: cada camada retira o cabeçalho correspondente e entrega os dados para a camada superior[cite: 563].
+                </p>
+
+                <hr>
+
+                <h2 class="section-title">Comparativo entre os Modelos</h2>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Semelhanças</th>
+                            <th>Diferenças</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <ul>
+                                    [cite_start]<li>Ambos são baseados em camadas[cite: 442, 887].</li>
+                                    [cite_start]<li>Ambos possuem camadas de Aplicação, Transporte e Rede (ou Internet) comparáveis[cite: 888, 890].</li>
+                                    [cite_start]<li>Ambos presumem a utilização de tecnologia de comutação de pacotes[cite: 892, 893].</li>
+                                </ul>
+                            </td>
+                            <td>
+                                <ul>
+                                    [cite_start]<li>O TCP/IP combina as camadas de Sessão e Apresentação do OSI em sua camada de Aplicação[cite: 897, 898].</li>
+                                    [cite_start]<li>O TCP/IP combina as camadas Física e de Enlace do OSI em uma única camada[cite: 899].</li>
+                                    [cite_start]<li>O modelo OSI é mais geral, enquanto o TCP/IP é mais específico e orientado a protocolos que se tornaram padrão da internet[cite: 419, 437, 901].</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+
+        <div id="simulado" class="tab-content">
+            <section class="section">
+                <h2 class="section-title">Simulado de Redes</h2>
+                <div class="quiz-container">
+                    <div class="question" data-answer="C">
+                        <h4>1. No contexto de sistemas abertos, qual é a diferença entre interoperabilidade e interconectividade?</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q1" value="A"> A) Ambas significam exatamente o mesmo: troca de dados entre máquinas.</label>
+                            <label><input type="radio" name="q1" value="B"> B) Interoperabilidade é física e interconectividade é lógica.</label>
+                            <label><input type="radio" name="q1" value="C"> C) Interoperabilidade refere-se à troca de informações entre sistemas diferentes, e interconectividade é a forma de conectá-los.</label>
+                            <label><input type="radio" name="q1" value="D"> D) Interconectividade trata apenas de cabos e conectores.</label>
+                            <label><input type="radio" name="q1" value="E"> E) Interoperabilidade é usada apenas em redes sem fio.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="D">
+                        <h4>2. No Modelo OSI, uma camada (N) conhece diretamente:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q2" value="A"> A) Todas as camadas acima e abaixo dela.</label>
+                            <label><input type="radio" name="q2" value="B"> B) Apenas as duas camadas abaixo.</label>
+                            <label><input type="radio" name="q2" value="C"> C) Apenas a camada física.</label>
+                            <label><input type="radio" name="q2" value="D"> D) Apenas as camadas (N-1) e (N+1).</label>
+                            <label><input type="radio" name="q2" value="E"> E) Apenas a camada de aplicação.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>3. A adoção de uma arquitetura em camadas reduz a complexidade no desenvolvimento de redes porque:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q3" value="A"> A) Elimina a necessidade de protocolos.</label>
+                            <label><input type="radio" name="q3" value="B"> B) Permite independência e abstração entre funções.</label>
+                            <label><input type="radio" name="q3" value="C"> C) Diminui a velocidade de desenvolvimento.</label>
+                            <label><input type="radio" name="q3" value="D"> D) Remove camadas desnecessárias.</label>
+                            <label><input type="radio" name="q3" value="E"> E) Padroniza o cabeamento.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+                    
+                    <div class="question" data-answer="B">
+                        <h4>4. O Modelo OSI define:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q4" value="A"> A) Apenas protocolos.</label>
+                            <label><input type="radio" name="q4" value="B"> B) Apenas os serviços que cada camada deve prestar.</label>
+                            <label><input type="radio" name="q4" value="C"> C) Apenas conexões físicas.</label>
+                            <label><input type="radio" name="q4" value="D"> D) Apenas endereçamento IP.</label>
+                            <label><input type="radio" name="q4" value="E"> E) Apenas métodos de criptografia.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="C">
+                        <h4>5. Sobre serviços e protocolos no OSI:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q5" value="A"> A) Serviços são usados entre sistemas iguais, protocolos entre camadas diferentes.</label>
+                            <label><input type="radio" name="q5" value="B"> B) Serviços e protocolos são a mesma coisa.</label>
+                            <label><input type="radio" name="q5" value="C"> C) Serviços definem o que fazer, protocolos definem como fazer.</label>
+                            <label><input type="radio" name="q5" value="D"> D) Protocolos funcionam apenas na camada de rede.</label>
+                            <label><input type="radio" name="q5" value="E"> E) Serviços são visíveis ao usuário final, protocolos não.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="C">
+                        <h4>6. Quantos tipos de primitivas de serviços existem no Modelo OSI?</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q6" value="A"> A) 2</label>
+                            <label><input type="radio" name="q6" value="B"> B) 3</label>
+                            <label><input type="radio" name="q6" value="C"> C) 4</label>
+                            <label><input type="radio" name="q6" value="D"> D) 5</label>
+                            <label><input type="radio" name="q6" value="E"> E) 6</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="A">
+                        <h4>7. Um serviço confirmado possui:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q7" value="A"> A) Pedido, indicação, resposta e confirmação.</label>
+                            <label><input type="radio" name="q7" value="B"> B) Pedido e indicação apenas.</label>
+                            <label><input type="radio" name="q7" value="C"> C) Apenas confirmação.</label>
+                            <label><input type="radio" name="q7" value="D"> D) Nenhum retorno ao solicitante.</label>
+                            <label><input type="radio" name="q7" value="E"> E) Resposta e pedido apenas.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>8. Um exemplo de serviço confirmado é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q8" value="A"> A) Transmissão de dados UDP.</label>
+                            <label><input type="radio" name="q8" value="B"> B) Conexão TCP entre cliente e servidor.</label>
+                            <label><input type="radio" name="q8" value="C"> C) Envio de e-mail sem autenticação.</label>
+                            <label><input type="radio" name="q8" value="D"> D) Broadcast ARP.</label>
+                            <label><input type="radio" name="q8" value="E"> E) Transferência de arquivos via FTP passivo.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>9. O SAP (Service Access Point) é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q9" value="A"> A) Ponto físico de conexão com o meio.</label>
+                            <label><input type="radio" name="q9" value="B"> B) Interface lógica entre camadas adjacentes.</label>
+                            <label><input type="radio" name="q9" value="C"> C) Nome dado aos pacotes na camada de transporte.</label>
+                            <label><input type="radio" name="q9" value="D"> D) Protocolo da camada de sessão.</label>
+                            <label><input type="radio" name="q9" value="E"> E) Ferramenta de diagnóstico.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+                    
+                    <div class="question" data-answer="C">
+                        <h4>10. Uma especificação elétrica da camada física é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q10" value="A"> A) Controle de fluxo.</label>
+                            <label><input type="radio" name="q10" value="B"> B) Tipo de protocolo usado.</label>
+                            <label><input type="radio" name="q10" value="C"> C) Nível de tensão para representar bits.</label>
+                            <label><input type="radio" name="q10" value="D"> D) Endereçamento MAC.</label>
+                            <label><input type="radio" name="q10" value="E"> E) Token Ring.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+                    
+                    <div class="question" data-answer="C">
+                        <h4>11. A unidade de transmissão da camada física é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q11" value="A"> A) Quadro</label>
+                            <label><input type="radio" name="q11" value="B"> B) Pacote</label>
+                            <label><input type="radio" name="q11" value="C"> C) Bit</label>
+                            <label><input type="radio" name="q11" value="D"> D) Segmento</label>
+                            <label><input type="radio" name="q11" value="E"> E) Byte</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>12. Uma função da camada de enlace é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q12" value="A"> A) Segmentação de pacotes.</label>
+                            <label><input type="radio" name="q12" value="B"> B) Controle de fluxo.</label>
+                            <label><input type="radio" name="q12" value="C"> C) Tradução de dados.</label>
+                            <label><input type="radio" name="q12" value="D"> D) Roteamento.</label>
+                            <label><input type="radio" name="q12" value="E"> E) Criptografia.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="C">
+                        <h4>13. O protocolo de enlace mais conhecido é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q13" value="A"> A) TCP</label>
+                            <label><input type="radio" name="q13" value="B"> B) IPX</label>
+                            <label><input type="radio" name="q13" value="C"> C) HDLC</label>
+                            <label><input type="radio" name="q13" value="D"> D) X.25</label>
+                            <label><input type="radio" name="q13" value="E"> E) FTP</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="A">
+                        <h4>14. A multiplexação de conexões de rede permite:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q14" value="A"> A) Várias conexões sobre uma única conexão de enlace.</label>
+                            <label><input type="radio" name="q14" value="B"> B) Vários cabos para uma única conexão física.</label>
+                            <label><input type="radio" name="q14" value="C"> C) Divisão física de cabos.</label>
+                            <label><input type="radio" name="q14" value="D"> D) Compressão de dados.</label>
+                            <label><input type="radio" name="q14" value="E"> E) Criptografia.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>15. Um protocolo da camada de rede é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q15" value="A"> A) FTP</label>
+                            <label><input type="radio" name="q15" value="B"> B) IP</label>
+                            <label><input type="radio" name="q15" value="C"> C) TCP</label>
+                            <label><input type="radio" name="q15" value="D"> D) HTTP</label>
+                            <label><input type="radio" name="q15" value="E"> E) SQL</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>16. A camada de transporte é responsável por:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q16" value="A"> A) Entrega de bits ao meio físico.</label>
+                            <label><input type="radio" name="q16" value="B"> B) Comunicação fim-a-fim.</label>
+                            <label><input type="radio" name="q16" value="C"> C) Gerar endereços IP.</label>
+                            <label><input type="radio" name="q16" value="D"> D) Comprimir dados.</label>
+                            <label><input type="radio" name="q16" value="E"> E) Converter formatos.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>17. A técnica de alocação de crédito é usada para:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q17" value="A"> A) Calcular custos de transmissão.</label>
+                            <label><input type="radio" name="q17" value="B"> B) Controle de fluxo na camada de transporte.</label>
+                            <label><input type="radio" name="q17" value="C"> C) Compressão de dados.</label>
+                            <label><input type="radio" name="q17" value="D"> D) Endereçamento físico.</label>
+                            <label><input type="radio" name="q17" value="E"> E) Segurança de rede.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>18. Em conexões half-duplex, a camada de sessão controla:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q18" value="A"> A) Qualidade de serviço.</label>
+                            <label><input type="radio" name="q18" value="B"> B) Tokens para definir quem transmite.</label>
+                            <label><input type="radio" name="q18" value="C"> C) Endereços MAC.</label>
+                            <label><input type="radio" name="q18" value="D"> D) Cabeçalhos de pacotes.</label>
+                            <label><input type="radio" name="q18" value="E"> E) Rotas dinâmicas.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="A">
+                        <h4>19. Sintaxe abstrata e sintaxe de transferência diferem porque:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q19" value="A"> A) Uma define formatos lógicos e outra define codificação física.</label>
+                            <label><input type="radio" name="q19" value="B"> B) Ambas tratam de endereços IP.</label>
+                            <label><input type="radio" name="q19" value="C"> C) Uma é para roteamento e outra para enlace.</label>
+                            <label><input type="radio" name="q19" value="D"> D) Sintaxe de transferência não é usada no OSI.</label>
+                            <label><input type="radio" name="q19" value="E"> E) Uma está na camada física e outra na de aplicação.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>20. Uma função da camada de aplicação é:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q20" value="A"> A) Gerenciar cabeçalhos de enlace.</label>
+                            <label><input type="radio" name="q20" value="B"> B) Fornecer interface entre usuário e aplicação.</label>
+                            <label><input type="radio" name="q20" value="C"> C) Multiplexar pacotes.</label>
+                            <label><input type="radio" name="q20" value="D"> D) Controlar tensão elétrica.</label>
+                            <label><input type="radio" name="q20" value="E"> E) Traduzir ASCII para bits.</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="A">
+                        <h4>21. No modelo OSI, qual camada é responsável por encapsular os dados do usuário com um cabeçalho e, opcionalmente, um trailer para formar um quadro?</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q21" value="A"> A) Camada de Enlace</label>
+                            <label><input type="radio" name="q21" value="B"> B) Camada de Rede</label>
+                            <label><input type="radio" name="q21" value="C"> C) Camada de Transporte</label>
+                            <label><input type="radio" name="q21" value="D"> D) Camada de Apresentação</label>
+                            <label><input type="radio" name="q21" value="E"> E) Camada Física</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="C">
+                        <h4>22. No modelo TCP/IP, qual dos seguintes protocolos opera na camada de Transporte e é considerado "não orientado à conexão e não confiável"?</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q22" value="A"> A) TCP</label>
+                            <label><input type="radio" name="q22" value="B"> B) IP</label>
+                            <label><input type="radio" name="q22" value="C"> C) UDP</label>
+                            <label><input type="radio" name="q22" value="D"> D) FTP</label>
+                            <label><input type="radio" name="q22" value="E"> E) ICMP</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>23. Qual a principal diferença de filosofia entre os modelos OSI e TCP/IP em relação ao seu surgimento?</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q23" value="A"> A) O OSI foi criado para redes locais, enquanto o TCP/IP para redes de longa distância.</label>
+                            <label><input type="radio" name="q23" value="B"> B) O OSI surgiu como um modelo teórico antes dos protocolos, enquanto o TCP/IP foi desenvolvido a partir de protocolos existentes.</label>
+                            <label><input type="radio" name="q23" value="C"> C) O TCP/IP é um modelo comercial, e o OSI é um modelo de código aberto.</label>
+                            <label><input type="radio" name="q23" value="D"> D) O OSI foca em hardware, e o TCP/IP foca em software.</label>
+                            <label><input type="radio" name="q23" value="E"> E) Ambos surgiram simultaneamente com os mesmos objetivos. </label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="A">
+                        <h4>24. O processo de adicionar informações de controle (cabeçalhos) em cada camada, à medida que os dados descem pela pilha de protocolos, é chamado de:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q24" value="A"> A) Encapsulamento</label>
+                            <label><input type="radio" name="q24" value="B"> B) Desmultiplexação</label>
+                            <label><input type="radio" name="q24" value="C"> C) Fragmentação</label>
+                            <label><input type="radio" name="q24" value="D"> D) Overload</label>
+                            <label><input type="radio" name="q24" value="E"> E) Protocolização</label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
+                    </div>
+
+                    <div class="question" data-answer="B">
+                        <h4>25. Na camada de Transporte do modelo OSI, a técnica de "alocação de crédito" é uma forma de:</h4>
+                        <div class="options">
+                            <label><input type="radio" name="q25" value="A"> A) Atribuir prioridade a pacotes. </label>
+                            <label><input type="radio" name="q25" value="B"> B) Controlar o fluxo de dados entre o emissor e o receptor, semelhante a uma janela deslizante.</label>
+                            <label><input type="radio" name="q25" value="C"> C) Definir a rota mais curta para os pacotes. </label>
+                            <label><input type="radio" name="q25" value="D"> D) Gerenciar o acesso ao meio físico. </label>
+                            <label><input type="radio" name="q25" value="E"> E) Criptografar as informações do cabeçalho. </label>
+                        </div>
+                        <div class="feedback"></div>
+                        <button class="show-answer-btn">Mostrar Resposta</button>
                     </div>
                 </div>
-                <div class="card">
-                    <h3>Serviços e Protocolos</h3>
-                    <p>
-                        É importante diferenciar serviço de protocolo. Um <strong>serviço</strong> é o que uma camada oferece à camada superior, funcionando como uma interface. [cite_start]Ele define as operações disponíveis, mas não como elas são implementadas[cite: 219, 220].
-                    </p>
-                    <p>
-                        [cite_start]Já o <strong>protocolo</strong> é um conjunto de regras que governa o formato e o significado dos dados trocados entre entidades pares (entidades na mesma camada, mas em sistemas diferentes)[cite: 221, 223]. [cite_start]Um protocolo é usado para implementar um serviço e pode ser modificado sem afetar a camada superior, desde que o serviço permaneça o mesmo[cite: 222].
-                    </p>
-                    <p>
-                        [cite_start]A comunicação entre sistemas ocorre em nível de camadas, ou seja, a camada de Aplicação de um sistema se comunica com a camada de Aplicação de outro, e assim por diante até o nível Físico, onde a comunicação é de fato realizada[cite: 90].
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">O Modelo TCP/IP</h2>
-            <p>
-                [cite_start]O modelo TCP/IP, base da internet, surgiu de um projeto financiado pela ARPA (Advanced Research Project Agency) em 1969[cite: 677]. [cite_start]Ele não foi desenvolvido como um modelo formal, mas sim a partir da evolução de protocolos que se tornaram padrões militares[cite: 456, 699, 892].
-            </p>
-            <p>
-                [cite_start]O modelo TCP/IP é mais simples que o OSI, pois possui menos camadas[cite: 455]. [cite_start]Ele combina as camadas de Sessão e Apresentação do OSI na sua camada de Aplicação, e as camadas de Enlace e Física em uma única camada de Acesso à Rede[cite: 452, 454].
-            </p>
-            <div class="card-container">
-                <div class="card">
-                    <h3>Camadas do Modelo TCP/IP</h3>
-                    <div class="list-container">
-                        <ul class="layer-list" style="counter-reset: layer-counter 4;">
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Aplicação</span>
-                                    <span class="layer-description">Suporta aplicações de usuário, combinando as funcionalidades de Apresentação, Sessão e Aplicação do OSI. [cite_start]Exemplos: FTP, HTTP, Telnet, SMTP[cite: 452, 741, 742, 755, 756, 767].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Transporte</span>
-                                    <span class="layer-description">Garante a comunicação fim-a-fim entre hosts. [cite_start]Usa TCP (confiável, orientado à conexão) e UDP (não-confiável, não orientado à conexão)[cite: 445, 729, 731, 733, 776].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Internet</span>
-                                    <span class="layer-description">Responsável pelo endereçamento (IP) e roteamento de pacotes na rede. [cite_start]Não garante a entrega do pacote[cite: 445, 605, 720, 721, 802].</span>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="layer-item-content">
-                                    <span class="layer-name">Acesso à Rede</span>
-                                    <span class="layer-description">Combina as camadas Física e de Enlace do OSI. [cite_start]Cuida dos detalhes de hardware e interfaceamento físico com a rede[cite: 454, 826, 828, 829].</span>
-                                </div>
-                            </li>
-                        </ul>
+            </section>
+        </div>
+        
+        <div id="flashcards" class="tab-content">
+            <h2 class="section-title">Flashcards</h2>
+            <p>Clique nos cards para virar e ver a resposta!</p>
+            <div class="flashcard-container">
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que é a camada Física do Modelo OSI?</div>
+                        [cite_start]<div class="flashcard-back">É a camada responsável pelas características mecânicas e elétricas, e pela transmissão de bits sem se preocupar com o seu significado[cite: 104, 106, 107, 108].</div>
                     </div>
                 </div>
-                <div class="card">
-                    <h3>Encapsulamento</h3>
-                    <p>
-                        No modelo TCP/IP, quando uma aplicação envia dados, eles passam por cada camada, da mais alta para a mais baixa. [cite_start]Cada camada adiciona sua própria informação de controle (cabeçalho) aos dados da camada superior[cite: 842]. [cite_start]A unidade de dados resultante é chamada de <strong>PDU (Protocol Data Unit)</strong>[cite: 149].
-                    </p>
-                    <p>
-                        Essa adição de informações é conhecida como <strong>overhead</strong>. [cite_start]É a diferença entre o tamanho inicial e o tamanho final do pacote[cite: 855]. [cite_start]A camada Física, por fim, transforma o pacote em uma sequência de bits para a transmissão[cite: 843]. [cite_start]No destino, o processo é o inverso: cada camada retira o cabeçalho correspondente e entrega os dados para a camada superior[cite: 118].
-                    </p>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual a principal função da camada de Rede no Modelo OSI?</div>
+                        [cite_start]<div class="flashcard-back">Controlar as operações da sub-rede, como roteamento e endereçamento lógico (IP)[cite: 140].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que é um "serviço" no contexto do Modelo OSI?</div>
+                        <div class="flashcard-back">É o que uma camada oferece à camada imediatamente superior. [cite_start]Define o que é feito, mas não como[cite: 664, 665].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual a diferença entre TCP e UDP?</div>
+                        <div class="flashcard-back">TCP é orientado à conexão e confiável. [cite_start]UDP é não orientado à conexão e não confiável, sendo mais rápido[cite: 321, 331, 335].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que é o encapsulamento no Modelo TCP/IP?</div>
+                        [cite_start]<div class="flashcard-back">É o processo de adicionar informações de controle (cabeçalhos) aos dados em cada camada, à medida que eles descem na pilha de protocolos[cite: 384, 385].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual é o objetivo principal do Modelo OSI?</div>
+                        [cite_start]<div class="flashcard-back">Padronizar a comunicação para permitir a interconexão de sistemas de diferentes fabricantes (interoperabilidade)[cite: 448].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual camada do Modelo OSI é a primeira a ser "fim-a-fim"?</div>
+                        [cite_start]<div class="flashcard-back">A camada de Transporte[cite: 161, 742].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que a camada de Apresentação faz?</div>
+                        [cite_start]<div class="flashcard-back">Lida com a sintaxe dos dados, realizando compressão, criptografia e tradução para um formato comum[cite: 186, 187, 188, 773].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que significa "overhead" em redes?</div>
+                        [cite_start]<div class="flashcard-back">É a diferença entre o tamanho inicial dos dados e o tamanho final do pacote após a adição de cabeçalhos por cada camada[cite: 398, 399].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual a principal função do protocolo IP?</div>
+                        [cite_start]<div class="flashcard-back">Endereçamento lógico dos hosts e roteamento de pacotes na camada Inter-Rede do TCP/IP[cite: 352, 355].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">A camada de Sessão controla o uso de "tokens" para qual finalidade?</div>
+                        [cite_start]<div class="flashcard-back">Para gerenciar o controle de diálogo em conexões half-duplex, definindo quem tem a vez de transmitir[cite: 176, 768, 769].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que é a PDU?</div>
+                        [cite_start]<div class="flashcard-back">PDU significa Protocol Data Unit (Unidade de Dados de Protocolo), que é a unidade de dados de uma camada, após a adição do cabeçalho de protocolo[cite: 594].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Cite uma semelhança entre OSI e TCP/IP.</div>
+                        [cite_start]<div class="flashcard-back">Ambos são baseados em camadas e presumem a tecnologia de comutação de pacotes[cite: 442, 887, 892, 893].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual camada do TCP/IP combina as funções de Enlace e Física do OSI?</div>
+                        [cite_start]<div class="flashcard-back">A camada de Interface de Rede ou Acesso à Rede[cite: 369, 414, 899].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual a principal diferença entre os modelos OSI e TCP/IP?</div>
+                        [cite_start]<div class="flashcard-back">O OSI é um modelo teórico genérico, enquanto o TCP/IP foi criado a partir de protocolos práticos e é mais específico para a Internet[cite: 419, 437, 901].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">O que é o endereço MAC?</div>
+                        [cite_start]<div class="flashcard-back">É um endereço físico de 12 dígitos hexadecimais que identifica uma placa de rede na camada de Enlace[cite: 128, 129].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual camada do OSI lida com a detecção e correção de erros?</div>
+                        [cite_start]<div class="flashcard-back">A camada de Enlace[cite: 121, 709, 721].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual a função da camada de Transporte?</div>
+                        [cite_start]<div class="flashcard-back">Ela provê a comunicação fim-a-fim, segmentando e garantindo a entrega confiável dos dados entre os hosts[cite: 157, 163, 742].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Cite um exemplo de protocolo da camada de Aplicação no TCP/IP.</div>
+                        [cite_start]<div class="flashcard-back">FTP (File Transfer Protocol), Telnet ou SMTP (Simple Mail Transfer Protocol)[cite: 285, 311].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">No Modelo OSI, o que é um SAP (Service Access Point)?</div>
+                        [cite_start]<div class="flashcard-back">É uma interface lógica entre duas camadas adjacentes, por onde a camada superior solicita serviços da camada inferior[cite: 679, 680, 681].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">Qual camada do TCP/IP não garante que o pacote chegue ao destino?</div>
+                        [cite_start]<div class="flashcard-back">A camada Inter-Rede[cite: 264, 269, 270, 271, 345, 346].</div>
+                    </div>
+                </div>
+                <div class="flashcard">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">No modelo OSI, qual camada é responsável por lidar com a tradução e compressão de dados?</div>
+                        [cite_start]<div class="flashcard-back">A camada de Apresentação[cite: 186, 188].</div>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <section class="section">
-            <h2 class="section-title">Comparativo entre os Modelos</h2>
-            <table class="comparison-table">
-                <thead>
-                    <tr>
-                        <th>Semelhanças</th>
-                        <th>Diferenças</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <ul>
-                                [cite_start]<li>Ambos são baseados em camadas[cite: 442, 505].</li>
-                                [cite_start]<li>Ambos possuem camadas de Aplicação, Transporte e Rede (ou Internet) comparáveis[cite: 443, 445].</li>
-                                [cite_start]<li>Ambos presumem a utilização de tecnologia de comutação de pacotes[cite: 448].</li>
-                            </ul>
-                        </td>
-                        <td>
-                            <ul>
-                                [cite_start]<li>O TCP/IP combina as camadas de Sessão e Apresentação do OSI em sua camada de Aplicação[cite: 452].</li>
-                                [cite_start]<li>O TCP/IP combina as camadas Física e de Enlace do OSI em uma única camada[cite: 454].</li>
-                                [cite_start]<li>O modelo OSI é mais geral, enquanto o TCP/IP é mais específico e orientado a protocolos que se tornaram padrão da internet[cite: 457, 877, 894].</li>
-                            </ul>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-
-        <div class="footer">
-            <p>Conteúdo baseado no material de estudo sobre Redes de Computadores.</p>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.nav-link');
+            const contents = document.querySelectorAll('.tab-content');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    tabs.forEach(t => t.classList.remove('active'));
+                    contents.forEach(c => c.classList.remove('active'));
+
+                    e.target.classList.add('active');
+                    const targetTab = e.target.getAttribute('href').substring(1);
+                    document.getElementById(targetTab).classList.add('active');
+                });
+            });
+
+            const flashcards = document.querySelectorAll('.flashcard');
+            flashcards.forEach(card => {
+                card.addEventListener('click', () => {
+                    card.classList.toggle('flipped');
+                });
+            });
+
+            const quizQuestions = document.querySelectorAll('.quiz-container .question');
+            quizQuestions.forEach(q => {
+                const options = q.querySelectorAll('input[type="radio"]');
+                const feedback = q.querySelector('.feedback');
+                const showAnswerBtn = q.querySelector('.show-answer-btn');
+                const correctAnswer = q.getAttribute('data-answer');
+
+                options.forEach(option => {
+                    option.addEventListener('change', () => {
+                        feedback.style.display = 'block';
+                        if (option.value === correctAnswer) {
+                            feedback.textContent = 'Correto!';
+                            feedback.classList.remove('incorrect');
+                            feedback.classList.add('correct');
+                        } else {
+                            feedback.textContent = 'Incorreto. Tente novamente.';
+                            feedback.classList.remove('correct');
+                            feedback.classList.add('incorrect');
+                        }
+                    });
+                });
+
+                showAnswerBtn.addEventListener('click', () => {
+                    options.forEach(option => {
+                        if (option.value === correctAnswer) {
+                            option.parentElement.style.backgroundColor = '#d4edda';
+                        } else {
+                            option.parentElement.style.backgroundColor = '#f9f9f9';
+                        }
+                    });
+                });
+            });
+        });
+    </script>
 </body>
 </html>
